@@ -1,5 +1,5 @@
-DROP   DATABASE   IF   EXISTS   `moviedb`;
-CREATE   DATABASE   `moviedb`;
+DROP   SCHEMA   IF   EXISTS   `moviedb`;
+CREATE   SCHEMA   `moviedb`;
 USE   `moviedb`;
 
 CREATE TABLE movies(
@@ -17,13 +17,13 @@ birthYear INTEGER,
 PRIMARY KEY(ID)
 );
 
-CREATE TABLE stars_in_movie(
+CREATE TABLE stars_in_movies(
 starId VARCHAR(10) NOT NULL,
 movieId VARCHAR(10) NOT NULL,
--- do i need primary key?????
+PRIMARY KEY(starId,movieId),
 -- do i need not null????
-FOREIGN KEY(starId) REFERENCES stars(id),
-FOREIGN KEY(movieId) REFERENCES movies(id)
+FOREIGN KEY(starId) REFERENCES stars(id) ON DELETE CASCADE,
+FOREIGN KEY(movieId) REFERENCES movies(id) ON DELETE CASCADE
 -- on delete cascade????????
 );
 
@@ -36,8 +36,9 @@ PRIMARY KEY(ID)
 CREATE TABLE genres_in_movies(
 genreId INTEGER ,
 movieId VARCHAR(10),
-FOREIGN KEY(movieId) REFERENCES movies(id),
-FOREIGN KEY(genreId) REFERENCES genres(id)
+PRIMARY KEY(genreId,movieId),
+FOREIGN KEY(movieId) REFERENCES movies(id) ON DELETE CASCADE,
+FOREIGN KEY(genreId) REFERENCES genres(id) ON DELETE CASCADE
 );
 
 
@@ -59,7 +60,7 @@ address VARCHAR(200)NOT NULL,
 email VARCHAR(50)NOT NULL,
 password VARCHAR(20)NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(ccId) REFERENCES creditcards(id)
+FOREIGN KEY(ccId) REFERENCES creditcards(id) ON DELETE CASCADE
 );
 
 -- relationship
@@ -69,18 +70,15 @@ customerId INTEGER NOT NULL,
 movieId VARCHAR(10)NOT NULL,
 saleDate DATE,
 PRIMARY KEY(id),
-FOREIGN KEY(customerId) REFERENCES customers(id),
-FOREIGN KEY(movieId) REFERENCES movies(id)
+FOREIGN KEY(customerId) REFERENCES customers(id) ON DELETE CASCADE,
+FOREIGN KEY(movieId) REFERENCES movies(id) ON DELETE CASCADE
 );
-
-
-
 
 CREATE TABLE ratings(
 movieId VARCHAR(10),
 rating FLOAT NOT NULL,
 numVotes INTEGER NOT NULL,
-FOREIGN KEY(movieId) REFERENCES movies(id)
+FOREIGN KEY(movieId) REFERENCES movies(id) ON DELETE CASCADE
 );
 
 
