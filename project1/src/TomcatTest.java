@@ -15,7 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class TomcatTest extends HttpServlet {
-    public String getServletInfo() {
+    /**
+	 * 
+	 */
+
+	public String getServletInfo() {
         return "Servlet connects to MySQL database and displays result of a SELECT";
     }
 
