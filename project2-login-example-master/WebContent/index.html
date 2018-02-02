@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>main page</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style type="text/css">
+
+	h1{text-align: center;}
+    #box{
+        width: 380px;
+        margin: 30px auto;
+        font-family: 'Microsoft YaHei';
+        font-size: 14px;
+    }
+    input{
+        width: 260px;
+        border: 1px solid #e2e2e2;
+        height: 30px;
+        float: left;
+        background-image: url(images/search.jpg);
+        background-repeat: no-repeat;
+        background-size: 25px;
+        background-position:5px center;
+        padding:0 0 0 40px;
+    }
+    #search{
+        width: 78px;
+        height: 32px;
+        float: right;
+        background: black;
+        color: white;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+    }
+    
+    #line{
+            width: 1200px;
+            height:1px;
+            margin:10px auto;
+            border-bottom: 1px solid grey;
+     }
+ 
+ 	h2{text-align: left;
+ 	   padding-left:160px;}
+ 	   
+ 	.left{
+        background: yellow;
+        float: left;
+        width: 600px;
+        height: 330px;
+        /*line-height: 100px;/*让黄色div中的文字内容垂直居中*/ 
+        text-align: center;/*让文字水平居中*/
+        /*position: absolute;
+        top:50%;
+        margin-top: -50px;
+        margin-left: 200px; */   
+    }
+    .right{
+        background: grey;
+        float: left;
+        width: 600px;
+        height: 330px;
+        /*line-height: 100px;/*让黄色div中的文字内容垂直居中*/
+        text-align: center;/*让文字水平居中*/
+        /*position: absolute;
+        top:50%;
+        margin-top: -50px;
+        margin-left: 200px;   */ 
+    }
+}
+
+</style>
+
+</head>
+<body>
+
+
+
+	<h1>Welcome to Fablix</h1>
+	<FORM ACTION="./Search"
+      METHOD="GET">
+    <div id="box">
+        <input type="text" name="search" placeholder="enter a movie to search">
+        <div id="search">search</div> 
+    </div>
+    </FORM>
+    
+    <a href="./advancedsearch.html">AdvancedSearch</a>
+    
+    <br />
+    <br />
+    <br />
+    <h1>Search Guide</h1>
+    
+    <div id="line"></div>
+    
+  
+    <div class="left">
+    <h2>Search Movie by Genre</h2>
+	    <a href="./BrowseByGenre?name=Action">Action</a>
+	    <a href="./BrowseByGenre?name=Adventure">Adventure</a>
+	    <a href="./BrowseByGenre?name=Adimation">Adimation</a>
+	    <a href="./BrowseByGenre?name=Biography">Biography</a>
+	    <a href="./BrowseByGenre?name=Comedy">Comedy</a>
+	    <br />
+	    <br />
+	    <br />
+	    <a href="./BrowseByGenre?name=Crime">Crime</a>
+	    <a href="./BrowseByGenre?name=Documentary">Documentary</a>
+	    <a href="./BrowseByGenre?name=Drama">Drama</a>
+	    <a href="./BrowseByGenre?name=Family">Family</a>
+	    <a href="./BrowseByGenre?name=Fantasy">Fantasy</a>
+	    <br />
+	    <br />
+	    <br />
+	    <a href="./BrowseByGenre?name=Film-Noir">Film-Noir</a>
+	    <a href="./BrowseByGenre?name=History">History</a>
+	    <a href="./BrowseByGenre?name=Horror">Horror</a>
+	    <a href="./BrowseByGenre?name=Music">Music</a>
+	    <a href="./BrowseByGenre?name=Musical">Musical</a>
+	    <br />
+	    <br />
+	    <br />
+	    <a href="./BrowseByGenre?name=Mystery">Mystery</a>
+	    <a href="./BrowseByGenre?name=Romance">Romance</a>
+	    <a href="./BrowseByGenre?name=Sci-Fi">Sci-Fi</a>
+	    <a href="./BrowseByGenre?name=Sport">Sport</a>
+	    <a href="./BrowseByGenre?name=Thriller">Thriller</a>
+	    <br />
+	    <br />
+	    <br />
+	    <a href="./BrowseByGenre?name=War">War</a>
+	    <a href="./BrowseByGenre?name=Western">Western</a>
+    </div>
+   
+    
+    <div class="right">
+    		<h2>Search Movie by Title</h2>
+    		<a href="./BrowseByTitle?name=A">A</a>
+	    <a href="./BrowseByTitle?name=B">B</a>
+	    <a href="./BrowseByTitle?name=C">C</a>
+	    <a href="./BrowseByTitle?name=D">D</a>
+	    <a href="./BrowseByTitle?name=E">E</a>
+	  
+	    <a href="./BrowseByTitle?name=F">F</a>
+	    <a href="./BrowseByTitle?name=G">G</a>
+	    <a href="./BrowseByTitle?name=H">H</a>
+	    <a href="./BrowseByTitle?name=I">I</a>
+	    <a href="./BrowseByTitle?name=J">J</a>
+	    <br />
+	    <br />
+	    <br />
+	    
+	    <a href="./BrowseByTitle?name=K">K</a>
+	    <a href="./BrowseByTitle?name=L">L</a>
+	    <a href="./BrowseByTitle?name=M">M</a>
+	    <a href="./BrowseByTitle?name=N">N</a>
+	    <a href="./BrowseByTitle?name=O">O</a>
+	    
+	    <a href="./BrowseByTitle?name=P">P</a>
+	    <a href="./BrowseByTitle?name=Q">Q</a>
+	    <a href="./BrowseByTitle?name=R">R</a>
+	    <a href="./BrowseByTitle?name=S">S</a>
+	    <a href="./BrowseByTitle?name=T">T</a>
+	    <br />
+	    <br />
+	    <br />
+	    
+	    <a href="./BrowseByTitle?name=U">U</a>
+	    <a href="./BrowseByTitle?name=V">V</a>
+	    <a href="./BrowseByTitle?name=W">W</a>
+	    <a href="./BrowseByTitle?name=X">X</a>
+	    <a href="./BrowseByTitle?name=Y">Y</a>
+	    <a href="./BrowseByTitle?name=Z">Z</a>
+	    
+	    <br />
+	    <br />
+	    <br />
+	    <a href="./BrowseByTitle?name=0">0</a>
+	    <a href="./BrowseByTitle?name=1">1</a>
+	    <a href="./BrowseByTitle?name=2">2</a>
+	    <a href="./BrowseByTitle?name=3">3</a>
+	    <a href="./BrowseByTitle?name=4">4</a>
+	    <a href="./BrowseByTitle?name=5">5</a>
+	    
+	    <a href="./BrowseByTitle?name=6">6</a>
+	    <a href="./BrowseByTitle?name=7">7</a>
+	    <a href="./BrowseByTitle?name=8">8</a>
+	    <a href="./BrowseByTitle?name=9">9</a>
+	    
+	    
+	</div>
+</body>
+</html>
