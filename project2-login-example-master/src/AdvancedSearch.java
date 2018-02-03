@@ -93,8 +93,8 @@ public class AdvancedSearch extends HttpServlet {
               		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
               		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND genres.name='"+ genre +"'\n" + 
               		"GROUP BY movies.title, movies.year, movies.director, ratings.rating\n" + 
-              		"ORDER BY ratings.rating DESC\n" + 
-              		"LIMIT 20;";
+              		"ORDER BY ratings.rating DESC;" ;//+ 
+              		//"LIMIT 100;";
             
             System.out.println("parameterrrrrrr  "+genre);
             System.out.println("go after query  " + query);

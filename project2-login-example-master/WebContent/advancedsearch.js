@@ -8,11 +8,16 @@ function handleMovieResult(resultData) {
 	// populate the movie table
 	
 
-	jQuery("#movie_list_body").text("");
+	//jQuery("#movie_list_body").text("");
 	var TableBodyElement = jQuery("#movie_list_body");
 	
 	
-	for (var i = 0; i < 20; i++) {
+	var len =resultData.length;
+	var page = Math.ceil(len/20) //获取页数
+	console.log("page numebr   "+page);
+	//var page_data = split_data(2, resultData)
+	
+	for (var i = 0; i < resultData.length; i++) {
 		var rowHTML = "";
 		rowHTML += "<tr>";
 		rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
@@ -26,13 +31,25 @@ function handleMovieResult(resultData) {
 		
 	}
 	
-	
+	console.log("before about ta ble");
+	$(document).ready(about_table);
+	console.log("after about ta ble");
 	
 	//window.location.replace("./advancedsearch.html");
 }
 
+
+function about_table()
+{
+	 $('#countTable').DataTable();
+	 //{"bSort": false}
+}
 // makes the HTTP GET request and registers on success callback function handleStarResult
 
+
+function split_data(pageNo, obj) {
+
+}
 
 
 function submitLoginForm(formSubmitEvent) {
