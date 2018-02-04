@@ -41,7 +41,7 @@ function handleMovieResult(resultData) {
 
 function about_table()
 {
-	 $('#countTable').DataTable();
+	 $('#countTable').DataTable({"bFilter": false});
 	 //{"bSort": false}
 }
 // makes the HTTP GET request and registers on success callback function handleStarResult
