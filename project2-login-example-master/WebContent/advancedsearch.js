@@ -4,28 +4,35 @@ function handleMovieResult(resultData) {
 	
 	console.log("new");
 	
-	console.log("genre    "+resultData[1]["genre_type"]);
+	//console.log("movie_title    "+resultData[1]["movie_title"]);
 	// populate the movie table
 	
-
-	//jQuery("#movie_list_body").text("");
 	var TableBodyElement = jQuery("#movie_list_body");
-	
-	
-	var len =resultData.length;
-	var page = Math.ceil(len/20) //获取页数
-	console.log("page numebr   "+page);
+
 	//var page_data = split_data(2, resultData)
 	
 	for (var i = 0; i < resultData.length; i++) {
+		
+		var new_str = split_data(resultData[i]["star_name"]);
 		var rowHTML = "";
 		rowHTML += "<tr>";
-		rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
+		
+		var title = resultData[i]["movie_title"];
+		var URL = "./SingleMovie?name="+ resultData[i]["movie_title"];
+
+		rowHTML += "<th> <a href='"+URL+"'>" + resultData[i]["movie_title"] + "</a></th>";
+		//rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
+		
 		rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
 		rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-		rowHTML += "<th>" + resultData[i]["star_name"] + "</th>";
+		
+		rowHTML += "<th> <a href='https://www.w3schools.com/html/'>" + new_str + "</a></th>";
+		//rowHTML += "<th>" + resultData[i]["star_name"] + "</th>";
+		
 		rowHTML += "<th>" + resultData[i]["genre_type"] + "</th>";
 		rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
+		var URL2 = "./ShoppingCart?name="+ resultData[i]["movie_title"];
+		rowHTML += "<th> <a href='"+URL2+"'>" + "Add to Cart" +"</a></th>";
 		rowHTML += "</tr>"
 		TableBodyElement.append(rowHTML);
 		
@@ -47,8 +54,27 @@ function about_table()
 // makes the HTTP GET request and registers on success callback function handleStarResult
 
 
-function split_data(pageNo, obj) {
-
+function split_data(obj) 
+{
+	
+	console.log("in split data");
+	var after_split = obj.split(',');
+	
+	var new_str = "";
+	for (var i = 0; i < after_split.length; i++) 
+	{
+		if (i!=after_split.length-1)
+			{
+				new_str += "<a href='https://www.w3schools.com/html/'>" + after_split[i] + "</a>,"
+			}
+		else
+			{
+				new_str += "<a href='https://www.w3schools.com/html/'>" + after_split[i] + "</a>"
+			}
+	}
+	
+	return new_str;
+	
 }
 
 

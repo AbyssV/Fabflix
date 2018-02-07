@@ -9,64 +9,54 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>BrowseByGenre</servlet-name>
+    <servlet-class>BrowseByGenre</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BrowseByGenre</servlet-name>
+    <url-pattern>/BrowseByGenre</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>BrowseByTitle</servlet-name>
+    <servlet-class>BrowseByTitle</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BrowseByTitle</servlet-name>
+    <url-pattern>/BrowseByTitle</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Search</servlet-name>
+    <servlet-class>Search</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Search</servlet-name>
+    <url-pattern>/Search</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AdvancedSearch</servlet-name>
+    <servlet-class>AdvancedSearch</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdvancedSearch</servlet-name>
+    <url-pattern>/AdvancedSearch</url-pattern>
+  </servlet-mapping>
   
+  <servlet>
+  <servlet-name>ShoppingCart</servlet-name>
+    <servlet-class>ShoppingCart</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShoppingCart</servlet-name>
+    <url-pattern>/ShoppingCart</url-pattern>
+  </servlet-mapping>
   
-
-  
-  <servlet>
-     <servlet-name>BrowseByGenre</servlet-name>
-     <servlet-class>BrowseByGenre</servlet-class>
-  </servlet>
- 
-<!-- Defines the path to access this Servlet -->
-<servlet-mapping>
-   <servlet-name>BrowseByGenre</servlet-name>
-   <url-pattern>/BrowseByGenre</url-pattern>
-</servlet-mapping>
-
-
-  <servlet>
-     <servlet-name>BrowseByTitle</servlet-name>
-     <servlet-class>BrowseByTitle</servlet-class>
-  </servlet>
- 
-<!-- Defines the path to access this Servlet -->
-<servlet-mapping>
-   <servlet-name>BrowseByTitle</servlet-name>
-   <url-pattern>/BrowseByTitle</url-pattern>
-</servlet-mapping>
-
-
-  <servlet>
-     <servlet-name>Search</servlet-name>
-     <servlet-class>Search</servlet-class>
-  </servlet>
- 
-<!-- Defines the path to access this Servlet -->
-<servlet-mapping>
-   <servlet-name>Search</servlet-name>
-   <url-pattern>/Search</url-pattern>
-</servlet-mapping>
-
-
-  <servlet>
-     <servlet-name>AdvancedSearch</servlet-name>
-     <servlet-class>AdvancedSearch</servlet-class>
-  </servlet>
- 
-<!-- Defines the path to access this Servlet -->
-<servlet-mapping>
-   <servlet-name>AdvancedSearch</servlet-name>
-   <url-pattern>/AdvancedSearch</url-pattern>
-</servlet-mapping>
-
-
   <filter>
     <filter-name>LoginFilter</filter-name>
     <filter-class>LoginFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>LoginFilter</filter-name> <!-- mandatory -->
+    <filter-name>LoginFilter</filter-name>
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>

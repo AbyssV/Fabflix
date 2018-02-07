@@ -56,47 +56,54 @@ public class AdvancedSearch extends HttpServlet {
             Statement statement = dbcon.createStatement();
 
             System.out.println(" hello in servelet ");
-            //String title = request.getParameter("title");
-            String genre = request.getParameter("genre");
+            String title = request.getParameter("title");
+            String year = request.getParameter("year");
+            String director = request.getParameter("director");
+            String input_star_name = request.getParameter("star_name");
             //String year = request.getParameter("sel");
             
             
-            System.out.println(" before title ");
-            //out.println(" title   "+title);
-            System.out.println(" genre   "+genre);
-            //out.println(" year   "+year);
+            System.out.println("                 before get parameter ");
+            System.out.println(" title   "+title);
+            System.out.println(" year   "+year);
+            System.out.println(" director   "+director);
+            System.out.println(" star_name   "+input_star_name);
             
             
-            System.out.println(" after title ");
-//            String[] total_input =  new String[3];
-////            if(title.length()>0)
-////            {
-////            		total_input[0]=title;
-////            }
-//            if (genre.length()>0)
-//            {
-//            		total_input[1]=genre;
-//            }
-////            else if (year.length()>0)
-////            {
-////            		total_input[2]=year;
-////            }
-//    
-//            
-//            out.println(" total input 1   "+total_input[0]);
-//            System.out.println(" total input  2  "+total_input[1]);
-//            out.println(" total input3   "+total_input[2]);
-//            
+            System.out.println("               after get parameter ");
+            
+            String total_input =  "";
+            if (title.length()>0)
+            {
+            		total_input += "movies.title LIKE '%" + title +"%' ";
+            }
+            if (year.length()>0)
+            {
+        			total_input += "AND movies.year=" + year +" ";
+            }
+            if (director.length()>0)
+            {
+            		total_input += "AND movies.director LIKE '%" + director +"%' ";
+            }
+            if (input_star_name.length()>0)
+            {
+            		total_input += "AND stars.name LIKE '%" + input_star_name +"%' ";
+            }
+
+            
+            System.out.println(" total input !   "+total_input);
+
+            
             System.out.println("before query  ");
             //genre = "drama";
             String query = "SELECT movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
               		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-              		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND genres.name='"+ genre +"'\n" + 
+              		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND "+ total_input +"\n" + 
               		"GROUP BY movies.title, movies.year, movies.director, ratings.rating\n" + 
               		"ORDER BY ratings.rating DESC;" ;//+ 
               		//"LIMIT 100;";
             
-            System.out.println("parameterrrrrrr  "+genre);
+            System.out.println("parameterrrrrrr  "+title);
             System.out.println("go after query  " + query);
             //total_input[1]
             // Perform the query

@@ -13,28 +13,7 @@
 
 
 <title>search result</title>
-<!-- 
-<script type="text/javascript" src="/jquery/jquery.js"></script>
-<script type="text/javascript">
-    onload = function ()
-    {
-         var year=new Date().getFullYear(); //获取当前年份
-         
-       var sel = document.getElementById ('sel');//获取select下拉列表
-       for ( var i = 2000; i < year+3; i++)//循环添加2000到当前年份加3年的每个年份依次添加到下拉列表
-       {
-           var option = document.createElement ('option');
-           option.value = i;
-           var txt = document.createTextNode (i);
-           option.appendChild (txt);
-           sel.appendChild (option);
-       }
-    }
-    
 
-
-   
-</script> -->
 
 
 </head>
@@ -48,18 +27,21 @@
 	<form id="input_form">
 	Movie Title:<br>
 	
-	<input type="text" name="genre">
+	<input type="text" name="title">
 	<br><br>
-	<!--
-	<p><input type="checkbox" name="genre" value="Action" />Action</p>
-    <p><input type="checkbox" name="genre" value="Adventure" />Adventure</p>
-    <p><input type="checkbox" name="genre" value="Biography" />Biography</p>
-    <p><input type="checkbox" name="genre" value="Comedy" />Comedy</p>
-    <p><input type="checkbox" name="genre" value="Crime" />Crime</p>
-    <p><input type="checkbox" name="genre" value="Documentary" />Documentary</p>
+	
+	Year:<br>
+    <input type="text" name="year">
+	<br><br>
+	
+	Director:<br>
+	<input type="text" name="director">
+	<br><br>
+	
+	Star Name:<br>
+	<input type="text" name="star_name">
+	<br><br>
     
-     <select id="sel">
-    </select>-->
     
     <input type="submit" value="Search">
 
@@ -78,6 +60,7 @@
 				<th>star</th>
 				<th>genre</th>
 				<th>rating</th>
+				<th>add to cart</th>
 			</tr>
 			
 	
@@ -100,8 +83,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="./advancedsearch.js"></script>
-	 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
-  <script type="text/javascript"  src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript"  src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
 
 	
