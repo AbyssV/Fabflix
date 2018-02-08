@@ -35,14 +35,20 @@ public class ShoppingCart extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		HttpSession session = request.getSession();
-	    ArrayList previousItems = (ArrayList)session.getAttribute("previousItems");
+		//session.invalidate();
+		
+	    HashMap<String,Integer> previousItems = (HashMap<String,Integer>)session.getAttribute("previousItems");
 	    if (previousItems == null) {
-	      previousItems = new ArrayList();
+	      previousItems = new HashMap<String,Integer>();
 	      session.setAttribute("previousItems", previousItems);
 	    }
 
 	    String newItem = request.getParameter("name");
-
+	    
+	    
+	    System.out.println("get ppppparameter for newitem   "+ newItem);
+	    
+	    
 	    response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    String title = "Items Purchased";
@@ -66,27 +72,111 @@ public class ShoppingCart extends HttpServlet {
 	    		"    <label class=\"product-line-price\">Total</label>\n" + 
 	    		"  </div>");
 	    				
-
+	    
+	    
+	 
 	   synchronized(previousItems) {
+		   
+//		   String remove_index = request.getParameter("name");
+//	       System.out.println("get ppppparameter for remove    "+remove_index);
+//	       if(remove_index != null)
+//	       {previousItems.remove(remove_index);}
+//		    
 	      if (newItem != null) {
-	        previousItems.add(newItem);
+	    	  	if (previousItems.containsKey(newItem))
+	    	  	{
+	    	  		previousItems.put(newItem, (previousItems.get(newItem) + 1));
+	    	  	}
+	    	  	else
+	    	  	{
+	    	  		previousItems.put(newItem,1);
+	    	  	}
 	      }
 	      if (previousItems.size() == 0) {
 	        out.println("<I>No items</I>");
-	      } else {
+	      } 
+	      else {
+	    	  
+	    	  	
 	        out.println("<UL>");
-	        for(int i=0; i<previousItems.size(); i++) {
-	          out.println("<LI>" + (String)previousItems.get(i));
+	        for(String key: previousItems.keySet()) {
+	        		System.out.println(key);
+	        		System.out.println(previousItems.get(key));
+	        		
 	        }
+	        
+	        
+	        String big_movie_name = "";
+	        for(String key: previousItems.keySet()) {
+	        	  Integer value = previousItems.get(key);
+	          out.println("<LI>" + key);
+	          
+	         
+	          
+	          out.println("<form id=\"myForm\" action='./ShoppingCart\'>\n" + 
+		        		"  <input type='hidden' name='movie title' value='"+key+"'><br>\n" + 
+		        		
+		        
+		        		"  Quatity: <input type='text' name='quatity' value='"+value+"'>\n" + 
+		        		"  <input type=\"submit\"  value=\"Change Quantity\">\n" + 
+		        		"</form>\n" 
+		        		);
+		        
+		        String movie_title = request.getParameter("movie title");
+		        String quatity = request.getParameter("quatity");
+			    
+			    if (quatity != null &&Integer.parseInt(quatity)!=value) 
+			    {
+				    previousItems.put(movie_title, Integer.parseInt(quatity));
+				    response.sendRedirect("./ShoppingCart");
+
+			    }
+		   
+	    
+	          out.println("<form id=\"myForm2\" action='./ShoppingCart\'>\n" + 
+		        		"  <input type='hidden' name='movie name' value='"+key+"'>\n" + 
+		        		
+		        		"  <input type=\"submit\"  value=\"Delete\">\n" + 
+		        		"</form>\n" 
+		        		);
+	          
+	          
+		        String movie_name = request.getParameter("movie name");
+		        if (movie_name!=null)
+		        {
+		        	big_movie_name=movie_name;
+		        		
+		        }
+
+	        }
+	        
+	        
+	        if (big_movie_name.length()!=0)
+	        {previousItems.remove(big_movie_name);
+	        big_movie_name="";
+	        response.sendRedirect("./ShoppingCart");}
+	        
 	        out.println("</UL>");
 	      }
+	      
+	      
+	      
 	    }
+	   
+	   
+	   
+	   for(String key: previousItems.keySet()) {
+     	  Integer value = previousItems.get(key);
+     	  System.out.println( key+value);
+	   }
 
 	   // The following two statements show how this thread can access an
 	   // object created by a thread of the ShowSession servlet
 	   // Integer accessCount = (Integer)session.getAttribute("accessCount");
 	   // out.println("<p>accessCount = " + accessCount);
 
+	   
+	   out.println("<a href='./CheckOut'>Check Out</a>");
 	   out.println("</BODY></HTML>");
 
 	}
