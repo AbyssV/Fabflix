@@ -13,6 +13,26 @@
 
 
 <title>search result</title>
+<style  type="text/css">
+
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+
+.ttle{
+width:200px;
+length:200px;
+}
+</style>
+
 
 
 
@@ -22,40 +42,43 @@
 	
 
 
-	<h1>Welcome to Advanced Search</h1>
+	<h1 align = "center">Welcome to Advanced Search</h1>
 	
-	<a href="./ShoppingCart">Check Out</a>
+	<a href="./ShoppingCart" style = "float = 'left';">ShoppingCart</a>
+	<a href="./index.html" style = "float = 'left';">HomePage</a>
 	
-	<form id="input_form">
+	<div>
+	<form id="input_form" align = "center">
 	Movie Title:<br>
 	
-	<input type="text" name="title">
+	<input class = "ttle" type="text" name="title">
 	<br><br>
 	
 	Year:<br>
-    <input type="text" name="year">
+    <input type="text" class = "ttle" name="year">
 	<br><br>
 	
 	Director:<br>
-	<input type="text" name="director">
+	<input type="text"  class = "ttle" name="director">
 	<br><br>
 	
 	Star Name:<br>
-	<input type="text" name="star_name">
+	<input type="text" class = "ttle" name="star_name">
 	<br><br>
     
     
     <input type="submit" value="Search">
 
 	</form>
+</div>
 
-<h1>hi there</h1>
 
 <table id="countTable">  <!-- class="movie list" border="2"> --> 
 
 
 		<thead>
 			<tr>
+				<th>movie id</th>
 				<th>title</th>
 				<th>year</th>
 				<th>director</th>

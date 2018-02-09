@@ -49,6 +49,27 @@
     <servlet-name>ShoppingCart</servlet-name>
     <url-pattern>/ShoppingCart</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>Sucess</servlet-name>
+    <servlet-class>Sucess</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Sucess</servlet-name>
+    <url-pattern>/Sucess</url-pattern>
+  </servlet-mapping>
+  
+  
+    <servlet>
+    <servlet-name>SingleMovie</servlet-name>
+    <servlet-class>SingleMovie</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SingleMovie</servlet-name>
+    <url-pattern>/SingleMovie</url-pattern>
+  </servlet-mapping>
+  
+  
   <filter>
     <filter-name>LoginFilter</filter-name>
     <filter-class>LoginFilter</filter-class>

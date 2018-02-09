@@ -64,12 +64,9 @@ public class ShoppingCart extends HttpServlet {
 	    out.println("<div class=\"shopping-cart\">\n" + 
 	    		"\n" + 
 	    		"  <div class=\"column-labels\">\n" + 
-	    		"    <label class=\"product-image\">Image</label>\n" + 
 	    		"    <label class=\"product-details\">Product</label>\n" + 
-	    		"    <label class=\"product-price\">Price</label>\n" + 
 	    		"    <label class=\"product-quantity\">Quantity</label>\n" + 
 	    		"    <label class=\"product-removal\">Remove</label>\n" + 
-	    		"    <label class=\"product-line-price\">Total</label>\n" + 
 	    		"  </div>");
 	    				
 	    
@@ -111,12 +108,13 @@ public class ShoppingCart extends HttpServlet {
 	        	  Integer value = previousItems.get(key);
 	          out.println("<LI>" + key);
 	          
+	          out.println("</BR>");
+	          
 	         
 	          
 	          out.println("<form id=\"myForm\" action='./ShoppingCart\'>\n" + 
-		        		"  <input type='hidden' name='movie title' value='"+key+"'><br>\n" + 
-		        		
-		        
+	        		  	//"<label> " + key + "</label>" +
+		        		"  <input type='hidden' name='movie title' value='"+key+"'>\n" +     
 		        		"  Quatity: <input type='text' name='quatity' value='"+value+"'>\n" + 
 		        		"  <input type=\"submit\"  value=\"Change Quantity\">\n" + 
 		        		"</form>\n" 
@@ -135,7 +133,6 @@ public class ShoppingCart extends HttpServlet {
 	    
 	          out.println("<form id=\"myForm2\" action='./ShoppingCart\'>\n" + 
 		        		"  <input type='hidden' name='movie name' value='"+key+"'>\n" + 
-		        		
 		        		"  <input type=\"submit\"  value=\"Delete\">\n" + 
 		        		"</form>\n" 
 		        		);

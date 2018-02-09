@@ -96,10 +96,10 @@ public class AdvancedSearch extends HttpServlet {
             
             System.out.println("before query  ");
             //genre = "drama";
-            String query = "SELECT movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
+            String query = "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
               		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
               		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND "+ total_input +"\n" + 
-              		"GROUP BY movies.title, movies.year, movies.director, ratings.rating\n" + 
+              		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
               		"ORDER BY ratings.rating DESC;" ;//+ 
               		//"LIMIT 100;";
             
@@ -113,14 +113,16 @@ public class AdvancedSearch extends HttpServlet {
             
             // Iterate through each row of rs
             while (rs.next()) {
-                String movie_title = rs.getString(1);
-                int movie_year = rs.getInt(2);
-                String movie_director = rs.getString(3);
-                String star_name = rs.getString(4);
-                String genre_type = rs.getString(5);
-                double rating = rs.getDouble(6);
+             	String movie_id = rs.getString(1);
+                String movie_title = rs.getString(2);
+                int movie_year = rs.getInt(3);
+                String movie_director = rs.getString(4);
+                String star_name = rs.getString(5);
+                String genre_type = rs.getString(6);
+                double rating = rs.getDouble(7);
                 
                 JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("movie_id", movie_id);
                 jsonObject.addProperty("movie_title", movie_title);
                 jsonObject.addProperty("movie_year", movie_year);
                 jsonObject.addProperty("movie_director", movie_director);

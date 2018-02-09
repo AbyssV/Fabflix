@@ -32,6 +32,8 @@ public class BrowseByTitle extends HttpServlet
         PrintWriter out = response.getWriter();
 
         out.println("<HTML><HEAD><TITLE>MovieDB: Found Records</TITLE></HEAD>");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css\">\n" + 
+        		"");
         out.println("<BODY><H1>MovieDB: Found Records</H1>");
 
 
@@ -61,7 +63,10 @@ public class BrowseByTitle extends HttpServlet
               ResultSet rs = statement.executeQuery(query);
 
               out.println("<TABLE border>");
-              
+             
+              out.println("<body>\n" + 
+                		"  <table id=\"title\">\n" + 
+                		"    <thead>\n");               
               
               
            // Iterate through each row of rs
@@ -74,9 +79,9 @@ public class BrowseByTitle extends HttpServlet
               "<td>" + "Genres" + "</td>" + 
             	  "<td>" + "Rating" + "</td>" +
               "</tr>");
-
               
-
+              
+              out.println("    </thead>");
               while (rs.next())
               {
                   
@@ -84,12 +89,38 @@ public class BrowseByTitle extends HttpServlet
                   int year = rs.getInt(2) ;
                   String director = rs.getString(3);
                   String stars = rs.getString(4);
+                  
+                  String url="";
+                  String star;
+                  Scanner s = new Scanner(stars).useDelimiter(", ");
+                  if (s.hasNext()) {
+                	  	star=s.next();
+                	  	url="<a href=\"./BrowseByGenre?name="+star+"\\\""+">"+star+"</a>";
+                  }
+                  
+                  while (s.hasNext()) {
+                	  	star=s.next();
+                	  	url=url+", <a href=\"./BrowseByGenre?name="+star+"\\\""+">"+star+"</a>";
+                	  //ystem.out.println(s.next()); 
+                  }
+                  
                   String genres = rs.getString(5);
                   Double rating = rs.getDouble(6);
-                  out.println("<tr>" + "<td>" + title + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
-                          + "<td>" + stars + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"</tr>");
+                  out.println("<tr>" + "<td>" + "<a href=\"./SingleMovie?name="+title+"\\\""+">"+title+"</a>" + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
+                          + "<td>" + url + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"</tr>");
               }
               out.println("</TABLE>");
+              
+              out.println("	<script type=\"text/javascript\" src=\"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js\"></script>\n" + 
+                		"    <script type=\"text/javascript\"  src=\"http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js\"></script>" +
+                		" \n" + 
+                		"  <script>\n" + 
+                		"  $(function(){\n" + 
+                		"    $(\"#title\").dataTable();\n" + 
+                		" \n" + 
+                		"})" + 
+                		" \n" + 
+                		"    </script>");              
 
               rs.close();
               statement.close();

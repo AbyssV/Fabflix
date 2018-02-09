@@ -32,6 +32,8 @@ public class BrowseByGenre extends HttpServlet
         PrintWriter out = response.getWriter();
 
         out.println("<HTML><HEAD><TITLE>MovieDB: Found Records</TITLE></HEAD>");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css\">\n" + 
+        		"");
         out.println("<BODY><H1>MovieDB: Found Records</H1>");
 
 
@@ -60,9 +62,14 @@ public class BrowseByGenre extends HttpServlet
               // Perform the query
               ResultSet rs = statement.executeQuery(query);
 
-              out.println("<TABLE border>");
-              
-              
+              //out.println("<TABLE border>");
+    
+              out.println("<body>\n" + 
+              		"  <table id=\"genre\">\n" + 
+              		"    <thead>\n"); 
+           
+             
+         
               
            // Iterate through each row of rs
               //out.println("<TABLE border style='color:#FFFFFF'>");
@@ -75,22 +82,66 @@ public class BrowseByGenre extends HttpServlet
             	  "<td>" + "Rating" + "</td>" +
               "</tr>");
 
-              
+              out.println("    </thead>");
 
               while (rs.next())
               {
                   
-                  String title = rs.getString(1);
+                  String title = rs.getString(1);               
                   int year = rs.getInt(2) ;
                   String director = rs.getString(3);
                   String stars = rs.getString(4);
+                  String url="";
+                  String star;
+                  Scanner s = new Scanner(stars).useDelimiter(", ");
+                  if (s.hasNext()) {
+                	  	star=s.next();
+                	  	url="<a href=\"./BrowseByGenre?name="+star+"\\\""+">"+star+"</a>";
+                  }
+                  
+                  while (s.hasNext()) {
+                	  	star=s.next();
+                	  	url=url+", <a href=\"./BrowseByGenre?name="+star+"\\\""+">"+star+"</a>";
+                	  //ystem.out.println(s.next()); 
+                  }
+                  
+                 
                   String genres = rs.getString(5);
+                  //String url="<a href=\"./BrowseByGenre?name="+stars+"\\\""+">"+stars+"</a>"
                   Double rating = rs.getDouble(6);
-                  out.println("<tr>" + "<td>" + title + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
-                          + "<td>" + stars + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"</tr>");
+                  out.println("<tr>" + "<td>" + "<a href=\"./SingleMovie?name="+title+"\\\""+">"+title+"</a>" + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
+                          + "<td>" + url + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"</tr>");
               }
+      
               out.println("</TABLE>");
-
+        
+              out.println("	<script type=\"text/javascript\" src=\"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js\"></script>\n" + 
+              		"    <script type=\"text/javascript\"  src=\"http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js\"></script>" +
+              		" \n" + 
+              		"  <script>\n" + 
+              		"  $(function(){\n" + 
+              		"    $(\"#genre\").dataTable();\n" + 
+              		" \n" + 
+              		"})" + 
+              		" \n" + 
+              		"    </script>");
+          
+              
+              /**
+                "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>	\n" + 
+              		"	<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\"></script>\n" + 
+              		"	<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\"></script>\n" + 
+              		"\n" + 
+              		"	<script src=\"./advancedsearch.js\"></script>\n" + 
+              out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"></script>	\n" + 
+              		"	<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\"></script>\n" + 
+              		"	<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\"></script>\n" + 
+              		"\n" + 
+              		"	<script type=\"text/javascript\" src=\"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js\"></script>\n" + 
+              		"    <script type=\"text/javascript\"  src=\"http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js\"></script>");
+			**/
+              
+              
               rs.close();
               statement.close();
               dbcon.close();

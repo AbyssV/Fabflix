@@ -17,6 +17,8 @@ function handleMovieResult(resultData) {
 		var rowHTML = "";
 		rowHTML += "<tr>";
 		
+		rowHTML += "<th>" + resultData[i]["movie_id"] + "</th>";
+		
 		var title = resultData[i]["movie_title"];
 		var URL = "./SingleMovie?name="+ resultData[i]["movie_title"];
 
