@@ -19,16 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.JsonObject;
 
 /**
- * Servlet implementation class SingleMovie
+ * Servlet implementation class SingleStar
  */
-@WebServlet("/SingleMovie")
-public class SingleMovie extends HttpServlet {
+@WebServlet("/SingleStar")
+public class SingleStar extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SingleMovie() {
+    public SingleStar() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -60,17 +60,17 @@ public class SingleMovie extends HttpServlet {
         Statement statement = dbcon.createStatement();
 		
     
-        String movie_title = request.getParameter("name");
+        String movie_star = request.getParameter("name");
         //String movie_title="Action";
 
         
         
-        out.println("<BODY><H1>Information about movie "+movie_title+"</H1>");
+        out.println("<BODY><H1>Information about movie "+movie_star+"</H1>");
 		//String query = "SELECT email, password from customers;";
 				
 		String query = "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
           		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-          		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND movies.title =\""+movie_title+"\"\n" + 
+          		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + "stars.name LIKE \"%" +movie_star+ "%\"\n" + 
           		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
           		"ORDER BY ratings.rating DESC\n" + 
           		"LIMIT 20;";
@@ -96,31 +96,17 @@ public class SingleMovie extends HttpServlet {
 		while (rs.next())
 		{
             String movie_id = rs.getString(1);
-            String title = rs.getString(2);
+            String title = rs.getString(2);               
             int year = rs.getInt(3) ;
             String director = rs.getString(4);
-            String stars = rs.getString(5);
-            
-            String url="";
-            String star;
-            Scanner s = new Scanner(stars).useDelimiter(", ");
-            if (s.hasNext()) {
-          	  	star=s.next();
-          	  	url="<a href=\"./SingleStar?name="+star+"\""+">"+star+"</a>";
-            }
-            
-            while (s.hasNext()) {
-          	  	star=s.next();
-          	  	url=url+", <a href=\"./SingleStar?name="+star+"\""+">"+star+"</a>";
-          	  //ystem.out.println(s.next()); 
-            }
-            
-            String genres = rs.getString(6);
+            String stars = rs.getString(5);           
+            String genres = rs.getString(6);    
             Double rating = rs.getDouble(7);
-            out.println("<tr>" + "<td>" + movie_id+ "</td>" + "<td>"+ title + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
-                    + "<td>" + url + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"<td>"+"<a href=\"./ShoppingCart?name="+title+"\""+">add to cart</a>"+"</td>"+"</tr>");
+            out.println("<tr>" + "<td>" + movie_id+ "</td>" + "<td>"+"<a href=\"./SingleMovie?name="+title+"\""+">"+title+"</a>" + "</td>" + "<td>" + year + "</td>" + "<td>" + director + "</td>"
+                    + "<td>" + stars + "</td>" + "<td>" + genres + "</td>" + "<td>" + rating + "</td>" +"<td>"+"<a href=\"./ShoppingCart?name="+title+"\""+">add to cart</a>"+"</td>"+"</tr>");
 
 		}
+		
 		out.println("</TABLE>");
 		out.println("<a href='./ShoppingCart'>ShoppingCart</a>");
         out.println("	<script type=\"text/javascript\" src=\"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js\"></script>\n" + 

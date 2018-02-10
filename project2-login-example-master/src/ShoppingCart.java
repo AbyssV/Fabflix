@@ -43,6 +43,8 @@ public class ShoppingCart extends HttpServlet {
 	      session.setAttribute("previousItems", previousItems);
 	    }
 
+	    
+	    
 	    String newItem = request.getParameter("name");
 	    
 	    
@@ -61,13 +63,7 @@ public class ShoppingCart extends HttpServlet {
 	                "<BODY BGCOLOR=\"#FDF5E6\">\n" +
 	                "<H1>" + title + "</H1>");
 	    
-	    out.println("<div class=\"shopping-cart\">\n" + 
-	    		"\n" + 
-	    		"  <div class=\"column-labels\">\n" + 
-	    		"    <label class=\"product-details\">Product</label>\n" + 
-	    		"    <label class=\"product-quantity\">Quantity</label>\n" + 
-	    		"    <label class=\"product-removal\">Remove</label>\n" + 
-	    		"  </div>");
+	
 	    				
 	    
 	    
@@ -174,6 +170,7 @@ public class ShoppingCart extends HttpServlet {
 
 	   
 	   out.println("<a href='./CheckOut'>Check Out</a>");
+	   out.println("<a href='./index.html'>HomePage</a>");
 	   out.println("</BODY></HTML>");
 
 	}

@@ -31,7 +31,7 @@ public class Sucess extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		
 		
@@ -39,11 +39,40 @@ public class Sucess extends HttpServlet {
 	    PrintWriter out = response.getWriter();
 	    
 	    
-	    out.println("<h1> check out Success :)</h1>");
-		HttpSession session = request.getSession();
-		//session.invalidate();
+	    out.println("<HTML><HEAD><TITLE>confirmation</TITLE>"
+	    		+ ""
+	    		+ "<style>\n" + 
+	    		"\n" + 
+	    		"        html, body {\n" + 
+	    		"            height: 100%;\n" + 
+	    		"            margin: 0;\n" + 
+	    		"            padding: 0;\n" + 
+	    		"            width: 100%;\n" + 
+	    		"        }\n" + 
+	    		"\n" + 
+	    		"        body {\n" + 
+	    		"            display: table;\n" + 
+	    		"        }\n" + 
+	    		"\n" + 
+	    		"        .my-block {\n" + 
+	    		"            text-align: center;\n" + 
+	    		"            display: table-cell;\n" + 
+	    		"            vertical-align: middle;\n" + 
+	    		"        }\n" + 
+	    		"        </style>"
+	    		+ ""
+	    		+ ""
+	    		+ "</HEAD>");
+	    
+	    
+	    out.println("<body background='http://img.ivsky.com/img/tupian/pre/201012/25/suse_zhiwen.jpg'>\n" + 
+	    		"    <div class=\"my-block\">");
+	    out.println("<h1> check out Success :)</h1>"
+	    		+ "<a href=\"./index.html\" style = \"float = 'left';\">HomePage</a>");
+	    out.println("</div>\n" + 
+	    		"    </body>"
+	    		+ "</HTML>");
 		
-	    HashMap<String,Integer> previousItems = (HashMap<String,Integer>)session.getAttribute("previousItems");
 	    
 	    
 	}

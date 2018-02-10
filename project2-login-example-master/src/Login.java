@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.JsonObject;
 
@@ -41,6 +42,15 @@ public class Login extends HttpServlet {
         String loginPasswd = "wei123456";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
+        
+//        HttpSession session = request.getSession();
+//        ArrayList customerInfo = null;
+//	    session.setAttribute("customerInfo", customerInfo);
+//	    
+//        
+//        
+//        
+        
         response.setContentType("text/html");    // Response mime type
         PrintWriter out = response.getWriter();
         //String username = request.getParameter("username");
@@ -98,8 +108,8 @@ public class Login extends HttpServlet {
 		// in the real project, you should talk to the database to verify username/password
 		if (flag==1&&flag2==1) {
 			// login success:
-			
 			// set this user into the session
+			
 			request.getSession().setAttribute("user", new User(username));
 			
 			JsonObject responseJsonObject = new JsonObject();

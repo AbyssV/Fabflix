@@ -75,7 +75,7 @@ public class AdvancedSearch extends HttpServlet {
             String total_input =  "";
             if (title.length()>0)
             {
-            		total_input += "movies.title LIKE '%" + title +"%' ";
+            		total_input += "AND movies.title LIKE '%" + title +"%' ";
             }
             if (year.length()>0)
             {
@@ -98,7 +98,7 @@ public class AdvancedSearch extends HttpServlet {
             //genre = "drama";
             String query = "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
               		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-              		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND "+ total_input +"\n" + 
+              		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id  "+ total_input +"\n" + 
               		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
               		"ORDER BY ratings.rating DESC;" ;//+ 
               		//"LIMIT 100;";

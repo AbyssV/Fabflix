@@ -36,38 +36,73 @@ public class CheckOut extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 
+	    out.println("<HTML><HEAD><TITLE>confirmation</TITLE>"
+	    		+ ""
+	    		+ "<style>\n" + 
+	    		"\n" + 
+	    		"        html, body {\n" + 
+	    		"            height: 100%;\n" + 
+	    		"            margin: 0;\n" + 
+	    		"            padding: 0;\n" + 
+	    		"            width: 100%;\n" + 
+	    		"        }\n" + 
+	    		"\n" + 
+	    		"        body {\n" + 
+	    		"            display: table;\n" + 
+	    		"        }\n" + 
+	    		"\n" + 
+	    		"        .my-block {\n" + 
+	    		"            text-align: center;\n" + 
+	    		"            display: table-cell;\n" + 
+	    		"            vertical-align: middle;\n" + 
+	    		"        }\n" + 
+	    		"        </style>"
+	    		+ ""
+	    		+ ""
+	    		+ "</HEAD>");
 		HttpSession session = request.getSession();
 		//session.invalidate();
 		
 	    HashMap<String,Integer> previousItems = (HashMap<String,Integer>)session.getAttribute("previousItems");
+	    User user = (User)session.getAttribute("user");
 	    
-	    if (previousItems == null) 
+	    if (previousItems.isEmpty() == true) 
 	    {
+	    	
+	    		out.println("<body background='http://pic.qiantucdn.com/00/94/60/08bOOOPICc3.jpg!qt780'>");
 	    		out.println("<h1>" +"Nothing in shopping cart" +"</h1>");
+	    		out.println("<a href='./index.html'>HomePage</a>");
+	    		out.println("</body>\n" + 
+	    				"</html>");
 		}
 	    else
 	    {
-	    	
-	    	out.println("<h1>" +"Moveis you want to check out:" +"</h1>");
+    		out.println("<body background='http://pic.qiantucdn.com/00/94/60/08bOOOPICc3.jpg!qt780'>");
+
+	    	out.println(" <div class='my-block'>"
+	    			+ "<h3>" +"Moveis you want to check out:" +"</h3>");
 	    	for(String key: previousItems.keySet()) {
-        		out.println("<h3>" +key+"  ");
-        		out.println(previousItems.get(key)+" </h3>");
-        		
+        		out.println("<LI>" +key+"  ");
+        		out.println(previousItems.get(key));
+        		out.println("</LI>");
         }
         
-	    }
+	    
 		
 		String loginUser = "root";
         String loginPasswd = "wei123456";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
 		
-		out.println("	<form id=\"input_form\">\n" + 
+		out.println("	<br><br>"
+				+ "<br>" +
+				"<h3> Please enter your information:</h3>" +
+				"<form id=\"input_form\">\n" + 
 				"	credit card number:<br>\n" + 
 				"	\n" + 
 				"	<input type=\"text\" name=\"credit\">\n" + 
@@ -89,7 +124,7 @@ public class CheckOut extends HttpServlet {
 				"    <input type=\"submit\" value=\"Submit\">\n" + 
 				"\n" + 
 				"	</form>\n" + 
-				"");
+				"</div>");
 		
 		
 		
@@ -169,25 +204,90 @@ public class CheckOut extends HttpServlet {
             if (rs.next())
             {
                 
-                //String result_credir = rs.getString(1);
-                //String result_firstName = rs.getString(2) ;
-                //String result_lastName = rs.getString(3);
-                //String resultExpiration = rs.getString(4);
+
             	
-            		response.sendRedirect("./Sucess");
-                //out.println("<h1>" +"check out sucess!" +"</h1>");
+            	String userID = "SELECT customers.id \n" + 
+            			"from customers \n" + 
+            			"where customers.firstName='"+first_name+"' and customers.lastName='"+last_name +"' and customers.ccId='"+credit+"';\n" + 
+            			"";
+            		
+            	System.out.println("go after query  " + userID);
+            	
+            	
+            	System.out.println("this is the error 1");
+            	//ResultSet rs = statement.executeQuery(query);
+            	ResultSet rs2 = statement.executeQuery(userID);   
+            	int userid = 0;
+            	if (rs2.next())
+                {
+            		userid = rs2.getInt(1);
+                }
+            		
+            		
+            		
+            
+        		System.out.println("this is the error 2");
+             for(String key: previousItems.keySet()) {
+         		
+            	 System.out.println("this is the error 3  inseide for loop      " + key);
+            	
+	            	 	String movieID = "SELECT movies.id \n" + 
+	            			"from movies \n" + 
+	            			"where movies.title='"+key+"' ;";
+            			
+	            	 	System.out.println("go after query  " + movieID);
+	            	 	
+	            	 	System.out.println("this is the error 4");
+	            	 	
+	            	 	ResultSet rs3 = statement.executeQuery(movieID); 
+	            	 	rs3.next();
+	            	 	String movieid= rs3.getString(1);
+	            	 	
+	            	 	System.out.println("this is the error 5      "+movieid);
+              
+	            	 	String insertSale = "\n" + 
+              		"INSERT INTO sales(customerId,movieId,saleDate) VALUES('"+userid+"','"+movieid+"', curdate());";
+	            	 	
+	            	 	System.out.println("this is the error 5      "+insertSale);
+	            	 	
+	            	 	
+	            	 
+               statement.executeUpdate(insertSale);
+               
+               
+               
+               String querynnnn = "SELECT sales.saleDate \n" + 
+           			"from sales \n" + 
+           			"where sales.customerId='"+userid+"' and sales.movieId='"+movieid +"' ;\n" + 
+           			"";
+               ResultSet rsn = statement.executeQuery(querynnnn);   
+           	if (rsn.next())
+               {
+           		System.out.println("sucessfully insert     " + rsn.getDate(1));               }
+             	}
+             
+             previousItems.clear();
+              response.sendRedirect("./Sucess");
+              
+            		
+       
             }
             
             else
             {
-            			out.println("<h3>" +"check out failed! :(" +"</h3>");
-            			out.println("<h3>" +"You need to enter again :(" +"</h3>");
+            	
+            			out.println("<div class='my-block'>"
+            					+ "<h3>check out failed! :(</h3>"+
+            			"<h3>You need to enter again :(</h3>"+
+            					"</div>");
             			//response.sendRedirect("./CheckOut");
             		//out.println("<h1>" +"check out failed! :(" +"</h1>");
             }
             //out.println("</TABLE>");
-
+            //out.println("</body>\n" + 
+    				//"</html>");
             rs.close();
+            
             statement.close();
             dbcon.close();
             
@@ -201,15 +301,15 @@ public class CheckOut extends HttpServlet {
 
         catch(java.lang.Exception ex)
             {
-                out.println("<HTML>" +
-                            "<HEAD><TITLE>" +
-                            "MovieDB: Error" +
-                            "</TITLE></HEAD>\n<BODY>" +
-                            "<P>SQL error in doGet: " +
-                            ex.getMessage() + "</P></BODY></HTML>");
+//                out.println("<HTML>" +
+//                            "<HEAD><TITLE>" +
+//                            "MovieDB: Error" +
+//                            "</TITLE></HEAD>\n<BODY>" +
+//                            "<P>SQL error in doGet: " +
+//                            ex.getMessage() + "</P></BODY></HTML>");
                 return;
             }
-         out.close();
+         out.close();}
         
 	}
 	

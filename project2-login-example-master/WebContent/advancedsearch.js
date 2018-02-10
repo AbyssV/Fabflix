@@ -14,6 +14,7 @@ function handleMovieResult(resultData) {
 	for (var i = 0; i < resultData.length; i++) {
 		
 		var new_str = split_data(resultData[i]["star_name"]);
+		console.log("newwwwwwwww"+new_str);
 		var rowHTML = "";
 		rowHTML += "<tr>";
 		
@@ -28,7 +29,7 @@ function handleMovieResult(resultData) {
 		rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
 		rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
 		
-		rowHTML += "<th> <a href='https://www.w3schools.com/html/'>" + new_str + "</a></th>";
+		rowHTML += "<th> "+new_str + "</th>";
 		//rowHTML += "<th>" + resultData[i]["star_name"] + "</th>";
 		
 		rowHTML += "<th>" + resultData[i]["genre_type"] + "</th>";
@@ -59,19 +60,22 @@ function about_table()
 function split_data(obj) 
 {
 	
-	console.log("in split data");
-	var after_split = obj.split(',');
+	console.log("in split data" + obj);
+	var after_split = obj.split(', ');
 	
 	var new_str = "";
 	for (var i = 0; i < after_split.length; i++) 
 	{
 		if (i!=after_split.length-1)
 			{
-				new_str += "<a href='https://www.w3schools.com/html/'>" + after_split[i] + "</a>,"
+				console.log("newwwwwwwww"+after_split[i]);
+				new_str += "<a href='./SingleStar?name=" + after_split[i] + "'>"+after_split[i]+"</a>,"
+				console.log("newwwwwwwww"+new_str);
 			}
 		else
 			{
-				new_str += "<a href='https://www.w3schools.com/html/'>" + after_split[i] + "</a>"
+				new_str += "<a href='./SingleStar?name=" + after_split[i] + "'>"+after_split[i] +"</a>"
+				console.log("newwwwwwwww"+new_str);
 			}
 	}
 	
