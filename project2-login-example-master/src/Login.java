@@ -39,7 +39,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String loginUser = "root";
-        String loginPasswd = "wei123456";
+        String loginPasswd = "1065428254djdg";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
         

@@ -95,7 +95,7 @@ public class CheckOut extends HttpServlet {
 	    
 		
 		String loginUser = "root";
-        String loginPasswd = "wei123456";
+        String loginPasswd = "1065428254djdg";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
 		
