@@ -38,7 +38,23 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String loginUser = "root";
+        PrintWriter out = response.getWriter();
+
+		String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+		System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+		// Verify CAPTCHA.
+		boolean valid = VerifyUtils.verify(gRecaptchaResponse);
+		if (!valid) {
+		    //errorString = "Captcha invalid!";
+		    out.println("<HTML>" +
+				"<HEAD><TITLE>" +
+				"MovieDB: Error" +
+				"</TITLE></HEAD>\n<BODY>" +
+				"<P>Recaptcha WRONG!!!! </P></BODY></HTML>");
+		    return;
+		}
+		
+		String loginUser = "root";
         String loginPasswd = "wei123456";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
@@ -52,7 +68,6 @@ public class Login extends HttpServlet {
 //        
         
         response.setContentType("text/html");    // Response mime type
-        PrintWriter out = response.getWriter();
         //String username = request.getParameter("username");
 		//String password = request.getParameter("password");
         

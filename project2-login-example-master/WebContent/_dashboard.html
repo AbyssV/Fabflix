@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+
+
+<title>search result</title>
+<style  type="text/css">
+
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+div {
+
+	
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+
+.ttle{
+width:200px;
+length:200px;
+}
+</style>
+
+
+
+
+</head>
+<body background='http://www.51pptmoban.com/d/file/2014/03/04/f3a5aa46e86bf282ef6750af47cd28a4.gif'>
+
+	
+	<a href="./Metadata" style = "float = 'left';">Show Metadata</a>
+
+	<h1 align = "center">Add Star</h1>
+	
+	<a href="./ShoppingCart" style = "float = 'left';">ShoppingCart</a>
+	<a href="./index.html" style = "float = 'left';">HomePage</a>
+	
+	<div>
+	<form id="input_form_star" align = "center">
+
+	
+	Name:<br>
+    <input type="text" class = "ttle" name="name">
+	<br><br>
+	
+	birthYear:<br>
+	<input type="text"  class = "ttle" name="birthYear">
+	<br><br>
+	
+    <input type="submit" value="Submit">
+
+	</form>
+	
+	<div id="show_result_star"></div>
+</div>
+
+
+
+	<h1 align = "center">Add Movie</h1>
+	<div>
+	<form id="input_form_movie" align = "center">
+
+	Title:<br>
+    <input type="text" class = "ttle" name="title">
+	<br><br>
+	
+	Year:<br>
+	<input type="text"  class = "ttle" name="year">
+	<br><br>
+	
+	Director:<br>
+	<input type="text"  class = "ttle" name="director">
+	<br><br>
+	
+    <input type="submit" value="Submit">
+
+	</form>
+</div>
+
+
+<div id="show_result"></div>
+
+
+
+<table id="countTable">  <!-- class="movie list" border="2"> --> 
+
+
+		<thead>
+			<tr>
+				<th>movie id</th>
+				<th>title</th>
+				<th>year</th>
+				<th>director</th>
+				<th>star</th>
+				<th>genre</th>
+				<th>rating</th>
+				<th>add to cart</th>
+			</tr>
+			
+	
+
+		<thead>
+		
+		<tbody id="movie_list_body">
+		
+		</tbody>
+
+
+</table>
+
+
+
+	
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
+	<script src="./insertstar.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+
+
+	
+
+	
+</body>
+</html> 
+
+
+

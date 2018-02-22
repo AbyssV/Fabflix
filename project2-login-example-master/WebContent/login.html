@@ -10,6 +10,7 @@
 	<link href="" rel="stylesheet">
 	<style type="text/css">
 	.Header{
+		color:blue;
 		font-family: "Comic Sans MS", cursive, sans-serif;
 		font-size: 32px;
 		letter-spacing: 1.2px;
@@ -74,6 +75,7 @@
 	</style>
 	
 
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 </head>
 <body>
@@ -92,7 +94,14 @@
 	    <input type="password" placeholder="Enter Password" name="password">
 		<br>
 	    <input type="submit" value="Login">
+	    
+	    <div class="g-recaptcha" data-sitekey="6Lfc-kYUAAAAABUvokJhXSosxrOTMHKDwiWg5alh"></div>
+	    
+	    
+	    
 	</form>
+	
+	<a href="./employee_login.html">Employee Login</a>
 	</div>
 	
 	<div id="login_error_message"></div>

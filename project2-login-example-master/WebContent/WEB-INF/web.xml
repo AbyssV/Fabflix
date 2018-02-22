@@ -65,7 +65,7 @@
     <servlet-name>SingleMovie</servlet-name>
     <url-pattern>/SingleMovie</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>SingleStar</servlet-name>
     <servlet-class>SingleStar</servlet-class>
   </servlet>
@@ -73,7 +73,6 @@
     <servlet-name>SingleStar</servlet-name>
     <url-pattern>/SingleStar</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>CheckOut</servlet-name>
     <servlet-class>CheckOut</servlet-class>
@@ -82,7 +81,30 @@
     <servlet-name>CheckOut</servlet-name>
     <url-pattern>/CheckOut</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>EmployeeLogin</servlet-name>
+    <servlet-class>EmployeeLogin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EmployeeLogin</servlet-name>
+    <url-pattern>/EmployeeLogin</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>InsertStar</servlet-name>
+    <servlet-class>InsertStar</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>InsertStar</servlet-name>
+    <url-pattern>/InsertStar</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Metadata</servlet-name>
+    <servlet-class>Metadata</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Metadata</servlet-name>
+    <url-pattern>/Metadata</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>LoginFilter</filter-name>
     <filter-class>LoginFilter</filter-class>
