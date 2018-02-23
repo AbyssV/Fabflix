@@ -137,9 +137,10 @@ public class ParseFile {
 		
 		int year = getIntValue(empEl,"year");
 
+		String genre = getTextValue(empEl,"cats");
 		
 		//Create a new Employee with the value read from the xml nodes
-		Movie e = new Movie(id,title,year,director);
+		Movie e = new Movie(id,title,year,director,genre);
 		
 		return e;
 	}
@@ -169,7 +170,7 @@ public class ParseFile {
 		NodeList nl = ele.getElementsByTagName(tagName);
 		if(nl != null && nl.getLength() > 0) {
 			Element el = (Element)nl.item(0);
-			textVal = el.getFirstChild().getNodeValue();
+			textVal = el.getTextContent();
 		}
 
 		return textVal;

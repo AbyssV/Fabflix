@@ -11,23 +11,23 @@ function handleAddResult(resultDataJson) {
 	// if login success, redirect to index.html page
 	if (resultDataJson["status"] == "flag1")
 	{
-		jQuery("#show_result_star").text(resultDataJson["message"]);
+		jQuery("#show_result").text(resultDataJson["message"]);
 	} 
 	else if (resultDataJson["status"] == "flag0")
 	{
 		console.log("show error message");
 		console.log(resultDataJson["message"]);
-		jQuery("#show_result_star").text(resultDataJson["message"]);
+		jQuery("#show_result").text(resultDataJson["message"]);
 	}
 	else
 	{
-		jQuery("#show_result_star").text(resultDataJson["message"]);
+		jQuery("#show_result").text(resultDataJson["message"]);
 	}
 }
 
 
 function submitLoginForm(formSubmitEvent) {
-	console.log("submit login form in insert star");
+	console.log("submit login form in insert movie");
 	
 	// important: disable the default action of submitting the form
 	//   which will cause the page to refresh
@@ -37,13 +37,13 @@ function submitLoginForm(formSubmitEvent) {
 	jQuery.ajax({	  
 		  dataType: "json",
 		  method: "GET",
-		  url: "./InsertStar",  
-		  data:jQuery("#input_form_star").serialize(),
-		  success: (resultData) => handleAddResult(resultData)
-//		  error: function(xhr, status, error) {
-//			  var err = eval("(" + xhr.responseText + ")");
-//			  alert(err.Message);
-//}
+		  url: "./InsertMovie",  
+		  data:jQuery("#input_form_movie").serialize(),
+		  success: (resultData) => handleAddResult(resultData),
+		  error: function(xhr, status, error) {
+			  var err = eval("(" + xhr.responseText + ")");
+			  alert(err.Message);
+}
            
 	});
 	
@@ -58,5 +58,5 @@ function submitLoginForm(formSubmitEvent) {
 	}
 
 // bind the submit action of the form to a handler function
-jQuery("#input_form_star").submit((event) => submitLoginForm(event));
+jQuery("#input_form_movie").submit((event) => submitLoginForm(event));
 

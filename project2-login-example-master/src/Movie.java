@@ -12,15 +12,18 @@ public class Movie {
 
 	private String director;
 	
+	private String genre;
+	
 	public Movie(){
 		
 	}
 	
-	public Movie(String id, String title, int year,String director) {
+	public Movie(String id, String title, int year,String director,String genre) {
 		this.id = id;
 		this.title = title;
 		this.year  = year;
 		this.director = director;
+		this.genre = genre;
 		
 	}
 
@@ -61,6 +64,14 @@ public class Movie {
 	}	
 	
 	
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Movie Details - ");
@@ -71,6 +82,8 @@ public class Movie {
 		sb.append("Year:" + getYear());
 		sb.append(", ");
 		sb.append("Director:" + getDirector());
+		sb.append(",");
+		sb.append("Genre:" + getGenre());
 		sb.append(".");
 		
 		return sb.toString();

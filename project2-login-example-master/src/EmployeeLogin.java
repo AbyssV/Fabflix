@@ -39,7 +39,19 @@ public class EmployeeLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
-
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+		System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+		// Verify CAPTCHA.
+		boolean valid = VerifyUtils.verify(gRecaptchaResponse);
+		if (!valid) {
+		    //errorString = "Captcha invalid!";
+		    out.println("<HTML>" +
+				"<HEAD><TITLE>" +
+				"MovieDB: Error" +
+				"</TITLE></HEAD>\n<BODY>" +
+				"<P>Recaptcha WRONG!!!! </P></BODY></HTML>");
+		    return;
+		}
 		
 		String loginUser = "root";
         String loginPasswd = "wei123456";
