@@ -4,7 +4,7 @@
 
 public class Movie {
 
-	private String id;
+	//private String id;
 	
 	private String title;
 	
@@ -18,8 +18,8 @@ public class Movie {
 		
 	}
 	
-	public Movie(String id, String title, int year,String director,String genre) {
-		this.id = id;
+	public Movie(String title, int year,String director,String genre) {
+		//this.id = id;
 		this.title = title;
 		this.year  = year;
 		this.director = director;
@@ -27,6 +27,7 @@ public class Movie {
 		
 	}
 
+	/**
 	public String getId() {
 		return id;
 	}
@@ -34,7 +35,7 @@ public class Movie {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+	**/
 	
 
 	public String getTitle() {
@@ -75,8 +76,8 @@ public class Movie {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Movie Details - ");
-		sb.append("Id:" + getId());
-		sb.append(", ");
+		//sb.append("Id:" + getId());
+		//sb.append(", ");
 		sb.append("Title:" + getTitle());
 		sb.append(", ");
 		sb.append("Year:" + getYear());

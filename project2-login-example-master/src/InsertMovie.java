@@ -104,7 +104,7 @@ public class InsertMovie extends HttpServlet {
           
         
 
-            
+            String result = "";
             System.out.println(" before query   ");
             //call add_movie('like', 2018, 'Damon Lee', 'wjkh', 1899, 'Action');
             if(flag!=-1) {
@@ -124,7 +124,7 @@ public class InsertMovie extends HttpServlet {
             //ResultSet result = stored_procedure.getResultSet();
 
             System.out.println("result = "+stored_procedure.getString(7));
-            
+            result = stored_procedure.getString(7);
             //String result=stored_procedure.getString(7);
             
 //            if (result==1)
@@ -154,18 +154,18 @@ public class InsertMovie extends HttpServlet {
             }
             
         
-            if (flag==1) 
-        {
-    			// insert success:
-    			
-    			
-    			JsonObject responseJsonObject = new JsonObject();
-    			responseJsonObject.addProperty("status", "flag1");
-    			responseJsonObject.addProperty("message", "successfully insert movie!");
-    			
-    			response.getWriter().write(responseJsonObject.toString());
-    		} 
-            else if (flag ==-1) 
+//            if (flag==1) 
+//        {
+//    			// insert success:
+//    			
+//    			
+//    			JsonObject responseJsonObject = new JsonObject();
+//    			responseJsonObject.addProperty("status", "flag1");
+//    			responseJsonObject.addProperty("message", "successfully insert movie!");
+//    			
+//    			response.getWriter().write(responseJsonObject.toString());
+//    		} 
+            if (flag ==-1) 
         {
     			//name empty
     			JsonObject responseJsonObject = new JsonObject();
@@ -176,13 +176,14 @@ public class InsertMovie extends HttpServlet {
     			response.getWriter().write(responseJsonObject.toString());
     		}
             
-    		else //if (flag ==0) 
+    		else if (flag ==0) 
     		{
     			
     			JsonObject responseJsonObject = new JsonObject();
     			responseJsonObject.addProperty("status", "flag0");
     			
-    			responseJsonObject.addProperty("message", "movie already in the datebase");
+    			
+				responseJsonObject.addProperty("message", result);
     			
     			response.getWriter().write(responseJsonObject.toString());
     		}

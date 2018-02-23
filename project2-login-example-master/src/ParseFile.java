@@ -137,7 +137,7 @@ public class ParseFile {
 		
 		int year = getIntValue(empEl,"year");
 
-		String genre = getTextValue(empEl,"cats");
+		String genre = getTextValue(empEl,"cat");
 		
 		//Create a new Employee with the value read from the xml nodes
 		Movie e = new Movie(id,title,year,director,genre);
