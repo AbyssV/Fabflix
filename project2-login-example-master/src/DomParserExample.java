@@ -293,6 +293,12 @@ public class DomParserExample {
 	  	    	 }
 	  	    	 
 	  	    	System.out.println(" 1111111");
+	  	    	
+	  	  	System.out.println(MovieList.size());
+	  	  Iterator it = MovieList.iterator();
+			while(it.hasNext()) {
+				System.out.println(it.next().toString());
+			}
 	  	    for(int i=0;i<MovieList.size();i++)
 	  	    {
             	 

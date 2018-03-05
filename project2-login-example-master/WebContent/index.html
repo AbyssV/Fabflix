@@ -7,6 +7,8 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 <link href="" rel="stylesheet">
+
+
 <style type="text/css">
 
 	h1{text-align: center;}
@@ -24,7 +26,7 @@
         border: 1px solid #e2e2e2;
         height: 30px;
         float: left;
-        background-image: url(images/search.jpg);
+        <!--background-image: url(images/search.jpg);-->
         background-repeat: no-repeat;
         background-size: 25px;
         background-position:5px center;
@@ -85,13 +87,23 @@
 
 
 	<h1>Welcome to Fablix</h1>
-	<FORM ACTION="./Search"
-      METHOD="GET">
+<!-- 	<FORM id="search form">
+      
     <div id="box">
-        <input type="text" name="search" placeholder="enter a movie to search">
+        <input type="text" name="search" placeholder="enter a movie to search" id="search_text">
         <div id="search">search</div> 
     </div>
     </FORM>
+     -->
+    	<div id="box" align = "center">
+	<form id="input_form_search" >
+
+	
+	<input type="text" name="search" placeholder="enter a movie to search" id="search_text">	<br><br>
+    <input type="submit" value="Search" id="search"> 
+
+	</form>
+</div>
     
     <a href="./advancedsearch.html">AdvancedSearch</a>
     <a href="./ShoppingCart">Your Shopping Cart</a>
@@ -200,5 +212,45 @@
 	    
 	    
 	</div>
+	
+	<div>
+	<table id="countTable">  <!-- class="movie list" border="2"> --> 
+
+
+		<thead>
+			<tr>
+				<th>movie id</th>
+				<th>title</th>
+				<th>year</th>
+				<th>director</th>
+				<th>star</th>
+				<th>genre</th>
+				<th>rating</th>
+				<th>add to cart</th>
+			</tr>
+			
+	
+
+		</thead>
+		
+		<tbody id="movie_list_body">
+		
+		</tbody>
+
+
+</table>
+</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+	
+	<script src="./search.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript"  src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+
+	
 </body>
 </html>

@@ -8,21 +8,29 @@ import java.sql.*;
 import java.text.*;
 import java.util.*;
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-
-public class Search extends HttpServlet
+@WebServlet("/AutoComplete")
+public class AutoComplete extends HttpServlet
 {
-    public String getServletInfo()
-    {
-       return "Servlet connects to MySQL database and displays result of a SELECT";
+	private static final long serialVersionUID = 1L;
+    
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AutoComplete() {
+        super();
     }
 
+    
     // Use http GET
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
@@ -35,7 +43,7 @@ public class Search extends HttpServlet
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
     
-        System.out.println("in the servelet now");
+
 
         try
            {
@@ -46,8 +54,15 @@ public class Search extends HttpServlet
               // Declare our statement
               Statement statement = dbcon.createStatement();
 
-              String input = request.getParameter("search");
-              System.out.println("user input " + input);
+              String input = request.getParameter("query");
+              JsonArray jsonArray = new JsonArray();
+
+              
+           // return the empty json array if query is null or empty
+  			if (input == null || input.trim().isEmpty()) {
+  				response.getWriter().write(jsonArray.toString());
+  				return;}
+              
               String[] splited = input.split(" ");
               
               String total_input="";
@@ -72,7 +87,8 @@ public class Search extends HttpServlet
                 		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
                 		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
                 		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
-                		"ORDER BY ratings.rating DESC;" ;
+                		"ORDER BY ratings.rating DESC\n" +
+                		"LIMIT 20;";
                 	
              
               
@@ -85,48 +101,17 @@ public class Search extends HttpServlet
               ResultSet rs = statement.executeQuery(query);
 
 
-         
-              
-              JsonArray jsonArray = new JsonArray();
               while (rs.next())
               {
-            	  	  String movie_id = rs.getString(1);
                   String movie_title = rs.getString(2);
-                  int movie_year = rs.getInt(3);
-                  String movie_director = rs.getString(4);
-                  String star_name = rs.getString(5);
-                  String genre_type = rs.getString(6);
-                  double rating = rs.getDouble(7);
-                  
-                  System.out.print(movie_id);
-                  System.out.print(movie_title);
-                  System.out.print(movie_year);
-                  System.out.print(movie_director);
-                  System.out.print(star_name);
-                  System.out.print(genre_type);
-                  System.out.println(rating);
-                  
-                  
-                  JsonObject jsonObject = new JsonObject();
-                  jsonObject.addProperty("movie_id", movie_id);
-                  jsonObject.addProperty("movie_title", movie_title);
-                  jsonObject.addProperty("movie_year", movie_year);
-                  jsonObject.addProperty("movie_director", movie_director);
-                  jsonObject.addProperty("star_name", star_name);
-                  jsonObject.addProperty("genre_type", genre_type);
-                  jsonObject.addProperty("rating", rating);
-                  
-                  jsonArray.add(jsonObject);
-                  
-                  
+                  jsonArray.add(generateJsonObject(movie_title, "movie"));
+                 
               }
               out.write(jsonArray.toString());
               System.out.println(" after json");
               rs.close();
               statement.close();
               dbcon.close();
-              
-              System.out.println(" go back to js");
             }
         catch (SQLException ex) {
               while (ex != null) {
@@ -153,6 +138,18 @@ public class Search extends HttpServlet
     {
 	doGet(request, response);
 	} */
+    
+    
+    private static JsonObject generateJsonObject(String movie_title, String categoryName) {
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("value", movie_title);
+		
+		JsonObject additionalDataJsonObject = new JsonObject();
+		additionalDataJsonObject.addProperty("category", categoryName);
+		
+		jsonObject.add("data", additionalDataJsonObject);
+		return jsonObject;
+	}
  
 }
 
