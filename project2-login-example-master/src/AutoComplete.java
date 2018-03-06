@@ -17,6 +17,10 @@ import com.google.gson.JsonObject;
 @WebServlet("/AutoComplete")
 public class AutoComplete extends HttpServlet
 {
+	
+	public static HashMap<Integer, String> movie_list = new HashMap<>();
+	public static HashMap<Integer, String> star_list = new HashMap<>();
+	
 	private static final long serialVersionUID = 1L;
     
     /**
@@ -53,6 +57,7 @@ public class AutoComplete extends HttpServlet
               Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
               // Declare our statement
               Statement statement = dbcon.createStatement();
+              Statement statement2 = dbcon.createStatement();
 
               String input = request.getParameter("query");
               JsonArray jsonArray = new JsonArray();
@@ -88,7 +93,7 @@ public class AutoComplete extends HttpServlet
                 		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
                 		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
                 		"ORDER BY ratings.rating DESC\n" +
-                		"LIMIT 20;";
+                		"LIMIT 10;";
                 	
              
               
@@ -100,15 +105,75 @@ public class AutoComplete extends HttpServlet
               // Perform the query
               ResultSet rs = statement.executeQuery(query);
 
-
+              int key=1;
+              
               while (rs.next())
               {
                   String movie_title = rs.getString(2);
-                  jsonArray.add(generateJsonObject(movie_title, "movie"));
+                  movie_list.put(key, movie_title);
+                  key++;
+                  //jsonArray.add(generateJsonObject(movie_title, "movie"));
                  
               }
-              out.write(jsonArray.toString());
-              System.out.println(" after json");
+              
+              
+              
+              System.out.println(" after json1");
+              
+              String total_input2="";
+              
+
+              for (int i=0; i<splited.length; i++)
+              {
+            	  total_input2 = total_input2 + "MATCH (name) AGAINST ( '"+splited[i]+"*' IN BOOLEAN MODE) ";
+            	  if (i != splited.length-1)
+              	  	{
+              	  		total_input2+="AND ";
+              	  	}
+              }
+             
+           
+              System.out.println(total_input2);
+              
+              
+              
+              String query2 = ""
+              		+ "SELECT name\n" + 
+                		"FROM stars\n" + 
+                		"WHERE " + total_input2+"\n" +
+                		"LIMIT 10;";
+                	
+             
+              
+              System.out.println("query2 = "+query2);
+              rs = statement2.executeQuery(query2);
+
+              int key2=0;
+              while (rs.next())
+              {
+            	  
+                  String star_name = rs.getString(1);
+                  System.out.println("in while loop        "+star_name);
+                  star_list.put(key2, star_name);
+                  key2++;
+                  //jsonArray.add(generateJsonObject(movie_title, "movie"));
+                 
+              }
+              
+              for (Integer id : movie_list.keySet()) {
+  				String movieName = movie_list.get(id);
+  				System.out.println(movieName);
+  				jsonArray.add(generateJsonObject(movieName, "movie"));
+  			}
+  			
+  			for (Integer id : star_list.keySet()) {
+  				String starName = star_list.get(id);
+  				System.out.println(starName);
+  				jsonArray.add(generateJsonObject(starName, "star"));
+  				 }
+  			
+  			  System.out.println(" after json2");
+  			  out.write(jsonArray.toString());
               rs.close();
               statement.close();
               dbcon.close();

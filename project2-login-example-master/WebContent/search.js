@@ -170,10 +170,21 @@ function handleSelectSuggestion(suggestion) {
 	// TODO: jump to the specific result page based on the selected suggestion
 	
 	console.log("you select " + suggestion["value"])
-	var url = "/project2-login-example/SingleMovie?name=" + suggestion["value"]
-	console.log(url)
+	if (suggestion["data"]["category"] == "movie")
+		{
+		var url = "/project2-login-example/SingleMovie?name=" + suggestion["value"]
+		window.location.replace(url);
+		console.log(url)
+		}
 	
-	window.location.replace(url);
+	
+	else
+		{
+		var url = "/project2-login-example/SingleStar?name=" + suggestion["value"]
+		window.location.replace(url);
+		console.log(url)
+		}
+
 	
 }
 
