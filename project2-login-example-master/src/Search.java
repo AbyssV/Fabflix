@@ -48,6 +48,16 @@ public class Search extends HttpServlet
 
               String input = request.getParameter("search");
               System.out.println("user input " + input);
+              String result="";
+      
+              if (input.length()<6) {
+            	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
+              }
+              else if (input.length()>5) {
+            	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
+              } 
+              
+              
               String[] splited = input.split(" ");
               
               String total_input="";
@@ -70,7 +80,7 @@ public class Search extends HttpServlet
               String query = ""
               		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
                 		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
+                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND (" + total_input+"OR "+result+")\n" +
                 		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
                 		"ORDER BY ratings.rating DESC;" ;
                 	

@@ -1,6 +1,6 @@
-
+var hashmap = {};
 function handleMovieResult(resultData) {
-	console.log("handleStarResult: populating movie table from resultData" + resultData);
+	//console.log("handleStarResult: populating movie table from resultData" + resultData);
 	
 	console.log("new");
 	
@@ -14,7 +14,7 @@ function handleMovieResult(resultData) {
 	for (var i = 0; i < resultData.length; i++) {
 		
 		var new_str = split_data(resultData[i]["star_name"]);
-		console.log("newwwwwwwww"+new_str);
+		//console.log("newwwwwwwww"+new_str);
 		var rowHTML = "";
 		rowHTML += "<tr>";
 		
@@ -88,12 +88,22 @@ function split_data(obj)
 
 function handleLookup(query, doneCallback) {
 	console.log("submit login form in handle look up");
+	console.log("autocomplete initiated")
 	
 	// important: disable the default action of submitting the form
 	//   which will cause the page to refresh
 	//   see jQuery reference for details: https://api.jquery.com/submit/
 	//formSubmitEvent.preventDefault();
-		
+	
+	if (query in hashmap)
+	{
+		console.log("in cache");
+		handleLookupAjaxSuccess(hashmap[query], query, doneCallback)
+	}
+	else
+		{
+	console.log("not in cache");
+	console.log("sending AJAX request to backend Java Servlet")
 	jQuery.ajax({	  
 		  dataType: "json",
 		  method: "GET",
@@ -106,10 +116,11 @@ function handleLookup(query, doneCallback) {
 			}
 			 
 	});
-	
+		}
 
 	console.log("after  submit login form");
 	}
+
 
 function handleLookupAjaxSuccess(data, query, doneCallback) {
 	console.log("lookup ajax successful")
@@ -121,6 +132,7 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 	console.log(data)
 	
 	// TODO: if you want to cache the result into a global variable you can do it here
+	hashmap[query]=data;
 
 	// call the callback function provided by the autocomplete library
 	// add "{suggestions: jsonData}" to satisfy the library response format according to
@@ -156,7 +168,7 @@ function submitLoginForm(formSubmitEvent,query) {
 	console.log("after submit login form in submitLoginForm");}
 
 // bind the submit action of the form to a handler function
-//jQuery("#input_form_search").submit((event) => submitLoginForm(event));
+jQuery("#input_form_search").submit((event) => submitLoginForm(event,$('#search_text').val()));
 
 
 
@@ -173,7 +185,7 @@ function handleSelectSuggestion(suggestion) {
 	if (suggestion["data"]["category"] == "movie")
 		{
 		var url = "/project2-login-example/SingleMovie?name=" + suggestion["value"]
-		window.location.replace(url);
+		window.location.assign(url);
 		console.log(url)
 		}
 	
@@ -181,7 +193,7 @@ function handleSelectSuggestion(suggestion) {
 	else
 		{
 		var url = "/project2-login-example/SingleStar?name=" + suggestion["value"]
-		window.location.replace(url);
+		window.location.assign(url);
 		console.log(url)
 		}
 
@@ -206,6 +218,7 @@ $('#search_text').autocomplete({
     deferRequestBy: 300,
     // there are some other parameters that you might want to use to satisfy all the requirements
     // TODO: add other parameters, such as mininum characters
+    minChars : 3
 });
 
 /*
@@ -217,7 +230,7 @@ $('#search_text').autocomplete({
 $('#search_text').keypress(function(event) {
 	// keyCode 13 is the enter key
 	console.log("enter is using ");
-	if (event.keyCode == 13) {
+	if (event.keyCode == 13 ) {
 		// pass the value of the input box to the hanlder function
 		submitLoginForm(event,$('#search_text').val())
 	}

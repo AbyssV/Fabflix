@@ -68,7 +68,15 @@ public class AutoComplete extends HttpServlet
   				response.getWriter().write(jsonArray.toString());
   				return;}
               
-              String[] splited = input.split(" ");
+            String result="";
+            if (input.length()<6) {
+          	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
+            }
+            else if (input.length()>5) {
+          	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
+            }  
+  			
+  			String[] splited = input.split(" ");
               
               String total_input="";
               
@@ -90,10 +98,10 @@ public class AutoComplete extends HttpServlet
               String query = ""
               		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
                 		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
+                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND (" + total_input+"OR "+result+")\n" +
                 		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
                 		"ORDER BY ratings.rating DESC\n" +
-                		"LIMIT 10;";
+                		"LIMIT 5;";
                 	
              
               
@@ -106,7 +114,7 @@ public class AutoComplete extends HttpServlet
               ResultSet rs = statement.executeQuery(query);
 
               int key=1;
-              
+              movie_list = new HashMap<>();
               while (rs.next())
               {
                   String movie_title = rs.getString(2);
@@ -115,7 +123,15 @@ public class AutoComplete extends HttpServlet
                   //jsonArray.add(generateJsonObject(movie_title, "movie"));
                  
               }
+           
               
+              String result2="";
+              if (input.length()<6) {
+            	  	result2="(edrec(stars.name, '"+input+"', 2)=1)";
+              }
+              else if (input.length()>5) {
+            	  	result2="(edrec(stars.name, '"+input+"' ,4)=1)";
+              }  
               
               
               System.out.println(" after json1");
@@ -140,14 +156,14 @@ public class AutoComplete extends HttpServlet
               String query2 = ""
               		+ "SELECT name\n" + 
                 		"FROM stars\n" + 
-                		"WHERE " + total_input2+"\n" +
-                		"LIMIT 10;";
+                		"WHERE (" + total_input2+"OR "+result2+")\n" +
+                		"LIMIT 5;";
                 	
              
               
               System.out.println("query2 = "+query2);
               rs = statement2.executeQuery(query2);
-
+              star_list = new HashMap<>();
               int key2=0;
               while (rs.next())
               {
@@ -165,7 +181,10 @@ public class AutoComplete extends HttpServlet
   				System.out.println(movieName);
   				jsonArray.add(generateJsonObject(movieName, "movie"));
   			}
-  			
+              System.out.println("        ");
+              System.out.println("        ");
+              System.out.println("        ");
+              System.out.println("        ");
   			for (Integer id : star_list.keySet()) {
   				String starName = star_list.get(id);
   				System.out.println(starName);
