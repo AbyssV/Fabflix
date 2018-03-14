@@ -14,6 +14,10 @@ import javax.servlet.http.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import javax.naming.InitialContext;
+import javax.naming.Context;
+import javax.sql.DataSource;
+
 @WebServlet("/AutoComplete")
 public class AutoComplete extends HttpServlet
 {
@@ -51,10 +55,35 @@ public class AutoComplete extends HttpServlet
 
         try
            {
-              //Class.forName("org.gjt.mm.mysql.Driver");
-              Class.forName("com.mysql.jdbc.Driver").newInstance();
+        	// the following few lines are for connection pooling
+            // Obtain our environment naming context
 
-              Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            Context initCtx = new InitialContext();
+            if (initCtx == null)
+                out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+
+            // the following commented lines are direct connections without pooling
+            //Class.forName("org.gjt.mm.mysql.Driver");
+            //Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+
+            if (ds == null)
+                out.println("ds is null.");
+
+            Connection dbcon = ds.getConnection();
+            if (dbcon == null)
+                out.println("dbcon is null.");
+              //Class.forName("org.gjt.mm.mysql.Driver");
+              //Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+              //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
               // Declare our statement
               Statement statement = dbcon.createStatement();
               Statement statement2 = dbcon.createStatement();
@@ -98,7 +127,7 @@ public class AutoComplete extends HttpServlet
               String query = ""
               		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
                 		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND (" + total_input+"OR "+result+")\n" +
+                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
                 		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
                 		"ORDER BY ratings.rating DESC\n" +
                 		"LIMIT 5;";
@@ -156,7 +185,7 @@ public class AutoComplete extends HttpServlet
               String query2 = ""
               		+ "SELECT name\n" + 
                 		"FROM stars\n" + 
-                		"WHERE (" + total_input2+"OR "+result2+")\n" +
+                		"WHERE " + total_input2+"\n" +
                 		"LIMIT 5;";
                 	
              

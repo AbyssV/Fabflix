@@ -16,6 +16,10 @@ import java.sql.Statement;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.*; 
+
+import javax.naming.InitialContext;
+import javax.naming.Context;
+import javax.sql.DataSource;
 /**
  * Servlet implementation class CheckOut
  */
@@ -131,10 +135,36 @@ public class CheckOut extends HttpServlet {
 		
 		
 		try {
-            //Class.forName("org.gjt.mm.mysql.Driver");
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+			// the following few lines are for connection pooling
+            // Obtain our environment naming context
 
-            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            Context initCtx = new InitialContext();
+            if (initCtx == null)
+                out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+
+            // the following commented lines are direct connections without pooling
+            //Class.forName("org.gjt.mm.mysql.Driver");
+            //Class.forName("com.mysql.jdbc.Driver").newInstance();
+            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+
+            if (ds == null)
+                out.println("ds is null.");
+
+            Connection dbcon = ds.getConnection();
+            if (dbcon == null)
+                out.println("dbcon is null.");
+
+//            //Class.forName("org.gjt.mm.mysql.Driver");
+//            Class.forName("com.mysql.jdbc.Driver").newInstance();
+//
+//            Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             // Declare our statement
             Statement statement = dbcon.createStatement();
 

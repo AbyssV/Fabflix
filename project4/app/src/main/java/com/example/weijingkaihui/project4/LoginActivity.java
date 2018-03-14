@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity{
         RequestQueue queue = Volley.newRequestQueue(this);
 
         final Context context = this;
-        String url = "http://18.219.31.92:8080/project2-login-example/Login?username="+username+"&password="+password;
+        String url = "http://18.219.36.92:8080/project2-login-example/Login?username="+username+"&password="+password;
 
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,

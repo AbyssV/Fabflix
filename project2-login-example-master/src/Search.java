@@ -13,6 +13,9 @@ import javax.servlet.http.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import javax.naming.InitialContext;
+import javax.naming.Context;
+import javax.sql.DataSource;
 
 public class Search extends HttpServlet
 {
@@ -35,28 +38,52 @@ public class Search extends HttpServlet
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
     
-        System.out.println("in the servelet now");
+        System.out.println("in the servelet SEARCH now");
 
         try
            {
-              //Class.forName("org.gjt.mm.mysql.Driver");
-              Class.forName("com.mysql.jdbc.Driver").newInstance();
+        		// the following few lines are for connection pooling
+            // Obtain our environment naming context
 
-              Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            Context initCtx = new InitialContext();
+            if (initCtx == null)
+                out.println("initCtx is NULL");
+
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
+        	
+        	
+        	
+              //Class.forName("org.gjt.mm.mysql.Driver");
+              //Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+              //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            
+	            if (ds == null)
+	                out.println("ds is null.");
+	
+	            Connection dbcon = ds.getConnection();
+	            if (dbcon == null)
+	                out.println("dbcon is null.");
+	            
               // Declare our statement
               Statement statement = dbcon.createStatement();
 
               String input = request.getParameter("search");
               System.out.println("user input " + input);
-              String result="";
-      
-              if (input.length()<6) {
-            	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
-              }
-              else if (input.length()>5) {
-            	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
-              } 
-              
+//              String result="";
+//      
+//              if (input.length()<6) {
+//            	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
+//              }
+//              else if (input.length()>5) {
+//            	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
+//              } 
+//              
               
               String[] splited = input.split(" ");
               
@@ -77,15 +104,22 @@ public class Search extends HttpServlet
               
               
               
-              String query = ""
-              		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
-                		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
-                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND (" + total_input+"OR "+result+")\n" +
-                		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
-                		"ORDER BY ratings.rating DESC;" ;
-                	
+//              String query = ""
+//              		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
+//                		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
+//                		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND (" + total_input+"OR "+result+")\n" +
+//                		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
+//                		"ORDER BY ratings.rating DESC;" ;
+//                	
              
-              
+              String query = ""
+                		+ "SELECT movies.id, movies.title, movies.year, movies.director, GROUP_CONCAT(DISTINCT stars.name ORDER BY stars.name SEPARATOR ', ') AS stars, GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ', ') AS genres, ratings.rating\n" + 
+                  		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
+                  		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND " + total_input+"\n" +
+                  		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
+                  		"ORDER BY ratings.rating DESC;" ;
+                  	
+                             
               System.out.println("query = "+query);
               
               //movies.title LIKE '%home%'
