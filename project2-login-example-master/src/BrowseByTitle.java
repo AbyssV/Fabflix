@@ -89,8 +89,7 @@ public class BrowseByTitle extends HttpServlet
               		"FROM movies, genres, stars, stars_in_movies, genres_in_movies, ratings\n" + 
               		"WHERE movies.id=stars_in_movies.movieId AND stars_in_movies.starId=stars.id AND movies.id=genres_in_movies.movieId AND genres_in_movies.genreId=genres.id AND ratings.movieId=movies.id AND movies.title LIKE '"+input+"%'\n" + 
               		"GROUP BY movies.id, movies.title, movies.year, movies.director, ratings.rating\n" + 
-              		"ORDER BY ratings.rating DESC\n" + 
-              		"LIMIT 20;";
+              		"ORDER BY ratings.rating DESC;";  
               
               //movies.title LIKE '%home%'
               //movies.title LIKE '%"+input+"%'\n" +

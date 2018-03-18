@@ -29,9 +29,9 @@ public class Search extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
-        String loginUser = "root";
-        String loginPasswd = "wei123456";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+//        String loginUser = "root";
+//        String loginPasswd = "wei123456";
+//        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
         response.setContentType("application/json");    // Response mime type
 
@@ -48,31 +48,31 @@ public class Search extends HttpServlet
 	        	// Time an event in a program to nanosecond precision
 	        	long startTime1 = System.nanoTime();
         	
-//            Context initCtx = new InitialContext();
-//            if (initCtx == null)
-//                out.println("initCtx is NULL");
-//
-//            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-//            if (envCtx == null)
-//                out.println("envCtx is NULL");
-//
-//            // Look up our data source
-//            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
-        	
-        	
-        	
-              Class.forName("org.gjt.mm.mysql.Driver");
-              Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Context initCtx = new InitialContext();
+            if (initCtx == null)
+                out.println("initCtx is NULL");
 
-              Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-            
-//	            if (ds == null)
-//	                out.println("ds is null.");
-//	
-//	            Connection dbcon = ds.getConnection();
-//	            if (dbcon == null)
-//	                out.println("dbcon is null.");
-//	            
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            if (envCtx == null)
+                out.println("envCtx is NULL");
+
+            // Look up our data source
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
+        	
+        	
+        	
+//              Class.forName("org.gjt.mm.mysql.Driver");
+//              Class.forName("com.mysql.jdbc.Driver").newInstance();
+//
+//              Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+//            
+	            if (ds == null)
+	                out.println("ds is null.");
+	
+	            Connection dbcon = ds.getConnection();
+	            if (dbcon == null)
+	                out.println("dbcon is null.");
+	            
               // Declare our statement
               Statement statement = dbcon.createStatement();
 
@@ -89,7 +89,6 @@ public class Search extends HttpServlet
 //              } 
 //              
               
-              Connection conn = null;
               
               String[] splited = input.split(" ");
               
@@ -98,7 +97,7 @@ public class Search extends HttpServlet
 
               for (int i=0; i<splited.length; i++)
               {
-            	  total_input = total_input + "MATCH (title) AGAINST ('"+splited[i]+"*' IN BOOLEAN MODE) ";
+            	  total_input = total_input + "MATCH (title) AGAINST (? IN BOOLEAN MODE) ";
             	  if (i != splited.length-1)
               	  	{
               	  		total_input+="AND ";
@@ -130,13 +129,13 @@ public class Search extends HttpServlet
               
               //movies.title LIKE '%home%'
               //movies.title LIKE '%"+input+"%'\n" +
-              //PreparedStatement pstmt = dbcon.prepareStatement( query );
+              PreparedStatement pstmt = dbcon.prepareStatement( query );
               System.out.println("after preparement statement = "+query);
-//              for (int i=1; i<=splited.length; i++)
-//              {
-//            	  	pstmt.setString( i,splited[i-1]+"*");
-// 
-//              }
+              for (int i=1; i<=splited.length; i++)
+              {
+            	  	pstmt.setString( i,splited[i-1]+"*");
+ 
+              }
               
               System.out.println("query222222 = "+query);
               
@@ -144,8 +143,8 @@ public class Search extends HttpServlet
               long startTime2 = System.nanoTime();
               
               // Perform the query
-              //ResultSet rs = pstmt.executeQuery();
-              ResultSet rs = statement.executeQuery(query);
+              ResultSet rs = pstmt.executeQuery();
+              //ResultSet rs = statement.executeQuery(query);
 
               long endTime2 = System.nanoTime();
          
