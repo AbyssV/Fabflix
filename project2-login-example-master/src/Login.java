@@ -90,7 +90,7 @@ public class Login extends HttpServlet {
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
 
             // the following commented lines are direct connections without pooling
             //Class.forName("org.gjt.mm.mysql.Driver");

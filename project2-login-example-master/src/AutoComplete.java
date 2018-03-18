@@ -42,9 +42,9 @@ public class AutoComplete extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
-        String loginUser = "root";
-        String loginPasswd = "wei123456";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+//        String loginUser = "root";
+//        String loginPasswd = "wei123456";
+//        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
 
         response.setContentType("application/json");    // Response mime type
 
@@ -55,6 +55,8 @@ public class AutoComplete extends HttpServlet
 
         try
            {
+        		long startTime1 = System.nanoTime();
+            
         	// the following few lines are for connection pooling
             // Obtain our environment naming context
 
@@ -67,7 +69,7 @@ public class AutoComplete extends HttpServlet
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
 
             // the following commented lines are direct connections without pooling
             //Class.forName("org.gjt.mm.mysql.Driver");
@@ -97,14 +99,17 @@ public class AutoComplete extends HttpServlet
   				response.getWriter().write(jsonArray.toString());
   				return;}
               
-            String result="";
-            if (input.length()<6) {
-          	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
-            }
-            else if (input.length()>5) {
-          	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
-            }  
+//            String result="";
+//            if (input.length()<6) {
+//          	  	result="(edrec(movies.title, '"+input+"', 2)=1)";
+//            }
+//            else if (input.length()>5) {
+//          	  	result="(edrec(movies.title, '"+input+"' ,4)=1)";
+//            }  
+//  			
   			
+  			
+  			Connection conn = null;
   			String[] splited = input.split(" ");
               
               String total_input="";
@@ -112,7 +117,7 @@ public class AutoComplete extends HttpServlet
 
               for (int i=0; i<splited.length; i++)
               {
-            	  total_input = total_input + "MATCH (title) AGAINST ( '"+splited[i]+"*' IN BOOLEAN MODE) ";
+            	  total_input = total_input + "MATCH (title) AGAINST ( ? IN BOOLEAN MODE) ";
             	  if (i != splited.length-1)
               	  	{
               	  		total_input+="AND ";
@@ -140,7 +145,22 @@ public class AutoComplete extends HttpServlet
               //movies.title LIKE '%"+input+"%'\n" +
 
               // Perform the query
-              ResultSet rs = statement.executeQuery(query);
+ 
+              PreparedStatement pstmt = dbcon.prepareStatement( query );
+              
+              for (int i=1; i<=splited.length; i++)
+              {
+            	  	pstmt.setString( i,splited[i-1]+"*" );
+ 
+              }
+              
+              
+              
+              
+              // Perform the query
+              long startTime2 = System.nanoTime();
+              ResultSet rs = pstmt.executeQuery();
+              long endTime2 = System.nanoTime();
 
               int key=1;
               movie_list = new HashMap<>();
@@ -154,13 +174,13 @@ public class AutoComplete extends HttpServlet
               }
            
               
-              String result2="";
-              if (input.length()<6) {
-            	  	result2="(edrec(stars.name, '"+input+"', 2)=1)";
-              }
-              else if (input.length()>5) {
-            	  	result2="(edrec(stars.name, '"+input+"' ,4)=1)";
-              }  
+//              String result2="";
+//              if (input.length()<6) {
+//            	  	result2="(edrec(stars.name, '"+input+"', 2)=1)";
+//              }
+//              else if (input.length()>5) {
+//            	  	result2="(edrec(stars.name, '"+input+"' ,4)=1)";
+//              }  
               
               
               System.out.println(" after json1");
@@ -170,7 +190,7 @@ public class AutoComplete extends HttpServlet
 
               for (int i=0; i<splited.length; i++)
               {
-            	  total_input2 = total_input2 + "MATCH (name) AGAINST ( '"+splited[i]+"*' IN BOOLEAN MODE) ";
+            	  total_input2 = total_input2 + "MATCH (name) AGAINST ( ? IN BOOLEAN MODE) ";
             	  if (i != splited.length-1)
               	  	{
               	  		total_input2+="AND ";
@@ -191,7 +211,21 @@ public class AutoComplete extends HttpServlet
              
               
               System.out.println("query2 = "+query2);
-              rs = statement2.executeQuery(query2);
+              
+              PreparedStatement pstmt2 = dbcon.prepareStatement( query2 );
+              
+              for (int i=1; i<=splited.length; i++)
+              {
+            	  	pstmt2.setString( i,splited[i-1]+"*" );
+ 
+              }
+                  
+              // Perform the query
+              long startTime3 = System.nanoTime();
+              rs = pstmt2.executeQuery();      
+              long endTime3 = System.nanoTime();
+
+              
               star_list = new HashMap<>();
               int key2=0;
               while (rs.next())
@@ -225,6 +259,33 @@ public class AutoComplete extends HttpServlet
               rs.close();
               statement.close();
               dbcon.close();
+              long endTime1 = System.nanoTime();
+              
+              
+              long TS = endTime1 - startTime1;
+              long TJ = endTime2 - startTime2;
+              long TJ_star = endTime3 - startTime3;
+              
+              System.out.println(" TS       "+TS);
+              System.out.println(" TJ       "+TJ);
+              System.out.println(" TJ_star       "+TJ_star);
+              
+//              try(FileWriter fw = new FileWriter("/Users/weijingkaihui/Downloads/p5.txt ", true);
+//            		    BufferedWriter bw = new BufferedWriter(fw);
+//            		    PrintWriter out2 = new PrintWriter(bw))
+//            		{
+//            		    out2.print(TS);
+//            		    out2.print(" ");
+//            		    out2.print(TJ);
+//            		    out2.print(" ");
+//            		    out2.println(TJ_star);
+//            		    
+//            		} catch (IOException e) {
+//            		    //exception handling left as an exercise for the reader
+//            		}
+              
+              
+              
             }
         catch (SQLException ex) {
               while (ex != null) {

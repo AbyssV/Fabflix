@@ -1,9 +1,12 @@
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -20,6 +23,7 @@ import javax.naming.InitialContext;
 import javax.naming.Context;
 import javax.sql.DataSource;
 
+import java.util.*;
 /**
  * Servlet implementation class Movie
  */
@@ -52,10 +56,12 @@ public class AdvancedSearch extends HttpServlet {
         System.out.println("In this servlet now~~");
 
         try {
+        	
+        		long startTime1 = System.nanoTime();
         	// the following few lines are for connection pooling
             // Obtain our environment naming context
 
-            Context initCtx = new InitialContext();
+             Context initCtx = new InitialContext();
             if (initCtx == null)
                 out.println("initCtx is NULL");
 
@@ -64,7 +70,7 @@ public class AdvancedSearch extends HttpServlet {
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
 
             // the following commented lines are direct connections without pooling
             //Class.forName("org.gjt.mm.mysql.Driver");
@@ -90,7 +96,6 @@ public class AdvancedSearch extends HttpServlet {
             String year = request.getParameter("year");
             String director = request.getParameter("director");
             String input_star_name = request.getParameter("star_name");
-            //String year = request.getParameter("sel");
             
             
             System.out.println("                 before get parameter ");
@@ -102,22 +107,31 @@ public class AdvancedSearch extends HttpServlet {
             
             System.out.println("               after get parameter ");
             
+            
+            
+            Connection conn = null;
+            HashMap<String,String> hm=new HashMap<String,String>();
+            
             String total_input =  "";
             if (title.length()>0)
             {
-            		total_input += "AND movies.title LIKE '%" + title +"%' ";
+            		total_input += "AND movies.title LIKE ? ";
+            		hm.put("title", title);
             }
             if (year.length()>0)
             {
-        			total_input += "AND movies.year=" + year +" ";
+        			total_input += "AND movies.year=? ";
+        			hm.put("year", year);
             }
             if (director.length()>0)
             {
-            		total_input += "AND movies.director LIKE '%" + director +"%' ";
+            		total_input += "AND movies.director LIKE ? ";
+            		hm.put("director", director);
             }
             if (input_star_name.length()>0)
             {
-            		total_input += "AND stars.name LIKE '%" + input_star_name +"%' ";
+            		total_input += "AND stars.name LIKE ? ";
+            		hm.put("input_star_name", input_star_name);
             }
 
             
@@ -137,7 +151,39 @@ public class AdvancedSearch extends HttpServlet {
             System.out.println("go after query  " + query);
             //total_input[1]
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            PreparedStatement pstmt = dbcon.prepareStatement( query );
+            //pstmt.setString( 1, MovieList.get(i).getTitle());
+            
+            int index=1;
+            
+            if(hm.get("title")!=null)
+            {
+            		pstmt.setString( index, "%"+title+"%");
+            		index++;
+            }
+            if(hm.get("year")!=null)
+            {
+            		pstmt.setString( index, year);
+            		index++;
+            }
+            if(hm.get("director")!=null)
+            {
+            		pstmt.setString( index, "%"+director+"%");
+            		index++;
+            }
+            if(hm.get("input_star_name")!=null)
+            {
+            		pstmt.setString( index, "%"+input_star_name+"%");
+            		index++;
+            }
+            
+            
+            
+            
+            
+            long startTime2 = System.nanoTime();
+            ResultSet rs = pstmt.executeQuery();
+            long endTime2 = System.nanoTime();
             
             JsonArray jsonArray = new JsonArray();
             
@@ -168,6 +214,27 @@ public class AdvancedSearch extends HttpServlet {
             rs.close();
             statement.close();
             dbcon.close();
+            long endTime1 = System.nanoTime();
+            
+            long TS = endTime1 - startTime1;
+            long TJ = endTime2 - startTime2;
+            
+            System.out.println(" TS       "+TS);
+            System.out.println(" TJ       "+TJ);
+            
+            
+//            try(FileWriter fw = new FileWriter("/Users/weijingkaihui/Downloads/p5.txt ", true);
+//          		    BufferedWriter bw = new BufferedWriter(fw);
+//          		    PrintWriter out2 = new PrintWriter(bw))
+//          		{
+//          		    out2.print(TS);
+//          		    out2.print(" ");
+//          		    out2.println(TJ);
+//          		    
+//          		} catch (IOException e) {
+//          		    //exception handling left as an exercise for the reader
+//          		}
+            
         } catch (Exception e) {
             out.println("<HTML>" + "<HEAD><TITLE>" + "MovieDB: Error" + "</TITLE></HEAD>\n<BODY>"
                     + "<P>SQL error in doGet: " + e.getMessage() + "</P></BODY></HTML>");

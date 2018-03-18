@@ -71,12 +71,7 @@ public class InsertMovie extends HttpServlet {
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
-
-            // the following commented lines are direct connections without pooling
-            //Class.forName("org.gjt.mm.mysql.Driver");
-            //Class.forName("com.mysql.jdbc.Driver").newInstance();
-            //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/insert");
 
             if (ds == null)
                 out.println("ds is null.");
@@ -84,6 +79,10 @@ public class InsertMovie extends HttpServlet {
             Connection dbcon = ds.getConnection();
             if (dbcon == null)
                 out.println("dbcon is null.");
+            
+            
+            
+            
 
 //            //Class.forName("org.gjt.mm.mysql.Driver");
 //            Class.forName("com.mysql.jdbc.Driver").newInstance();

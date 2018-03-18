@@ -38,43 +38,47 @@ public class Search extends HttpServlet
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
     
-        System.out.println("in the servelet SEARCH now");
+        System.out.println("in the servelet SEARCHHH now");
 
         try
            {
         		// the following few lines are for connection pooling
             // Obtain our environment naming context
 
-            Context initCtx = new InitialContext();
-            if (initCtx == null)
-                out.println("initCtx is NULL");
-
-            Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            if (envCtx == null)
-                out.println("envCtx is NULL");
-
-            // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
+	        	// Time an event in a program to nanosecond precision
+	        	long startTime1 = System.nanoTime();
+        	
+//            Context initCtx = new InitialContext();
+//            if (initCtx == null)
+//                out.println("initCtx is NULL");
+//
+//            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+//            if (envCtx == null)
+//                out.println("envCtx is NULL");
+//
+//            // Look up our data source
+//            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
         	
         	
         	
-              //Class.forName("org.gjt.mm.mysql.Driver");
-              //Class.forName("com.mysql.jdbc.Driver").newInstance();
+              Class.forName("org.gjt.mm.mysql.Driver");
+              Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-              //Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
+              Connection dbcon = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
             
-	            if (ds == null)
-	                out.println("ds is null.");
-	
-	            Connection dbcon = ds.getConnection();
-	            if (dbcon == null)
-	                out.println("dbcon is null.");
-	            
+//	            if (ds == null)
+//	                out.println("ds is null.");
+//	
+//	            Connection dbcon = ds.getConnection();
+//	            if (dbcon == null)
+//	                out.println("dbcon is null.");
+//	            
               // Declare our statement
               Statement statement = dbcon.createStatement();
 
               String input = request.getParameter("search");
               System.out.println("user input " + input);
+              
 //              String result="";
 //      
 //              if (input.length()<6) {
@@ -85,6 +89,8 @@ public class Search extends HttpServlet
 //              } 
 //              
               
+              Connection conn = null;
+              
               String[] splited = input.split(" ");
               
               String total_input="";
@@ -92,7 +98,7 @@ public class Search extends HttpServlet
 
               for (int i=0; i<splited.length; i++)
               {
-            	  total_input = total_input + "MATCH (title) AGAINST ( '"+splited[i]+"*' IN BOOLEAN MODE) ";
+            	  total_input = total_input + "MATCH (title) AGAINST ('"+splited[i]+"*' IN BOOLEAN MODE) ";
             	  if (i != splited.length-1)
               	  	{
               	  		total_input+="AND ";
@@ -120,15 +126,28 @@ public class Search extends HttpServlet
                   		"ORDER BY ratings.rating DESC;" ;
                   	
                              
-              System.out.println("query = "+query);
+              System.out.println("query111111 = "+query);
               
               //movies.title LIKE '%home%'
               //movies.title LIKE '%"+input+"%'\n" +
-
+              //PreparedStatement pstmt = dbcon.prepareStatement( query );
+              System.out.println("after preparement statement = "+query);
+//              for (int i=1; i<=splited.length; i++)
+//              {
+//            	  	pstmt.setString( i,splited[i-1]+"*");
+// 
+//              }
+              
+              System.out.println("query222222 = "+query);
+              
+              
+              long startTime2 = System.nanoTime();
+              
               // Perform the query
+              //ResultSet rs = pstmt.executeQuery();
               ResultSet rs = statement.executeQuery(query);
 
-
+              long endTime2 = System.nanoTime();
          
               
               JsonArray jsonArray = new JsonArray();
@@ -142,14 +161,14 @@ public class Search extends HttpServlet
                   String genre_type = rs.getString(6);
                   double rating = rs.getDouble(7);
                   
-                  System.out.print(movie_id);
-                  System.out.print(movie_title);
-                  System.out.print(movie_year);
-                  System.out.print(movie_director);
-                  System.out.print(star_name);
-                  System.out.print(genre_type);
-                  System.out.println(rating);
-                  
+//                  System.out.print(movie_id);
+//                  System.out.print(movie_title);
+//                  System.out.print(movie_year);
+//                  System.out.print(movie_director);
+//                  System.out.print(star_name);
+//                  System.out.print(genre_type);
+//                  System.out.println(rating);
+//                  
                   
                   JsonObject jsonObject = new JsonObject();
                   jsonObject.addProperty("movie_id", movie_id);
@@ -169,8 +188,30 @@ public class Search extends HttpServlet
               rs.close();
               statement.close();
               dbcon.close();
+              long endTime1 = System.nanoTime();
               
-              System.out.println(" go back to js");
+              System.out.println(" go back to jsssss");
+              
+              long TS = endTime1 - startTime1;
+              long TJ = endTime2 - startTime2;
+              
+              System.out.println(" TS       "+TS);
+              System.out.println(" TJ       "+TJ);
+              ///Users/weijingkaihui/Downloads/p5.txt
+              ///home/ubuntu/p5.txt
+              try(FileWriter fw = new FileWriter("/home/ubuntu/p5.txt", true);
+          		    BufferedWriter bw = new BufferedWriter(fw);
+          		    PrintWriter out2 = new PrintWriter(bw))
+          		{
+          		    out2.print(TS);
+          		    out2.print(" ");
+          		    out2.println(TJ);
+          		    out2.close();
+          		    
+          		} catch (IOException e) {
+          		    //exception handling left as an exercise for the reader
+          		}
+              
             }
         catch (SQLException ex) {
               while (ex != null) {

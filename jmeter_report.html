@@ -1,0 +1,114 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background-color: linen;
+}
+
+td {
+    border-top-style: solid;
+}
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Single-instance version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="single3.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>69</td>
+    <td>1.314365</td>
+    <td>1.068226</td>
+    <td>Because I don't have login, therefore maybe my time is a little bit faster than those have login?? Also when I view my result tree in Jmeter, a lot of them are empty, no response, I'm also not sure any effect on my average time??? (??? I'm not sure)</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="single4.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>86</td>
+    <td>1.647454</td>
+    <td>1.365780</td>
+    <td>It needs more time when have 10 threads, TJ and TS increase about 0.3ms, and average query time increase from 69 to 86 compared with only one thread.</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTPS/10 threads</td>
+    <td><img src="single5.png" alt="Graph Results Screenshot Case 3" style="width:304px;height:228px;"></td>
+    <td>78</td>
+    <td>1.247028</td>
+    <td>1.023007</td>
+    <td>Using HTTPS makes everything faster than using HTTP. </td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No prepared statements</td>
+    <td><img src="single1.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>67</td>
+    <td>1.272869</td>
+    <td>1.062545</td>
+    <td>Disable PreparedStatement increase time very very little</td>
+  </tr>
+  <tr>
+    <td>Case 5: HTTP/10 threads/No connection pooling</td>
+    <td><img src="single2.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>92</td>
+    <td>2.825956</td>
+    <td>1.226659</td>
+    <td>Disable connection pooling increase a lot, from ~1 ms to ~2ms. Average JDBC time doesn't change a lot'</td>
+  </tr>
+
+</table> 
+
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Scaled version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="scaled3.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>71</td>
+    <td>1.623955</td>
+    <td>1.185489</td>
+    <td>Compared with above single-instance case, time doesn't change a lot, because of sticky session, one user always go to same instance</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="scaled4.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>77</td>
+    <td>1.354923</td>
+    <td>1.129811</td>
+    <td>Compared with single-instance case, time only decrease a little, because master and slave both do the job</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTP/10 threads/No prepared statements</td>
+    <td><img src="scaled1.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>79</td>
+    <td>1.287922</td>
+    <td>1.060501</td>
+    <td>Compared with single-instance case, time doesn't change. Average query time increase from 67 to 79.</td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No connection pooling</td>
+    <td><img src="scaled2.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>148</td>
+    <td>2.694319</td>
+    <td>1.170347</td>
+    <td>Compared with single-instance case, time becomes faster, but only very little. Average query time change from 92 to 148.</td>
+  </tr>
+
+</table> 
+
+</body>
+</html>

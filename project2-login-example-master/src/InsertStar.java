@@ -47,7 +47,7 @@ public class InsertStar extends HttpServlet {
 		
 		String loginUser = "root";
         String loginPasswd = "wei123456";
-        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+        String loginUrl = "jdbc:mysql://localhost:3306/insert";
 
         response.setContentType("application/json"); // Response mime type
 
@@ -69,7 +69,7 @@ public class InsertStar extends HttpServlet {
                 out.println("envCtx is NULL");
 
             // Look up our data source
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/TestDB");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/moviedb");
 
             // the following commented lines are direct connections without pooling
             //Class.forName("org.gjt.mm.mysql.Driver");
