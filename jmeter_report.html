@@ -44,7 +44,7 @@ td {
     <td>78</td>
     <td>1.247028</td>
     <td>1.023007</td>
-    <td>Using HTTPS makes everything faster than using HTTP. </td>
+    <td>Using HTTPS makes everything faster than using HTTP. Increase average search servelet time 0.4ms, and increase average JDBC time about 0.3ms. </td>
   </tr>
   <tr>
     <td>Case 4: HTTP/10 threads/No prepared statements</td>
@@ -52,7 +52,7 @@ td {
     <td>67</td>
     <td>1.272869</td>
     <td>1.062545</td>
-    <td>Disable PreparedStatement increase time very very little</td>
+    <td>Disable PreparedStatement make time longer, but very very little</td>
   </tr>
   <tr>
     <td>Case 5: HTTP/10 threads/No connection pooling</td>
@@ -60,7 +60,7 @@ td {
     <td>92</td>
     <td>2.825956</td>
     <td>1.226659</td>
-    <td>Disable connection pooling increase a lot, from ~1 ms to ~2ms. Average JDBC time doesn't change a lot'</td>
+    <td>Disable connection pooling makes search servlet time taking longer time, from ~1.2ms to ~2.8ms. Average JDBC time doesn't change a lot</td>
   </tr>
 
 </table> 
